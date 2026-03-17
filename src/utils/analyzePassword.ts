@@ -22,5 +22,5 @@ export function analyzePassword(password: string) {
 
     /*const suggestions: string[] = []*/
 
-    return {lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck}
+    return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck }
 }
