@@ -6,7 +6,7 @@ function App() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, allCheck, suggestions } = analyzePassword(password)
+  const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePassword(password)
 
   return (
     <div className="layout">
@@ -92,7 +92,7 @@ function App() {
         </div>
         <div className="suggestions-box">
           <ul className="suggestions-list">
-            {suggestions.length > 0 ? suggestions.map((item, i) => (<li className={allCheck ? "met" : "unmet"} key={i}>{item}</li>)) : <li>No suggestions ✔</li>}
+            {suggestions.length > 0 ? suggestions.map((item, i) => (<li className="unmet" key={i}>{item}</li>)) : <li className="met">No suggestions ✔</li>}
           </ul>
         </div>
       </div>
