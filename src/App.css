@@ -61,11 +61,22 @@
   padding: 0 4px;
 }
 
-.analysis-list li {
+.analysis-list li.unmet {
   font-family: var(--tech);
   font-size: 0.9rem;
   font-weight: bold;
   color: var(--requirement-unmet);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.55;
+}
+
+.analysis-list li.met {
+  font-family: var(--tech);
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--requirement-met);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -87,11 +98,22 @@
   gap: 8px;
 }
 
-.suggestions-list li {
+.suggestions-list li.unmet {
   font-family: var(--tech);
   font-size: 0.88rem;
   font-weight: bold;
   color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.6;
+}
+
+.suggestions-list li.met {
+  font-family: var(--tech);
+  font-size: 0.88rem;
+  font-weight: bold;
+  color: var(--requirement-met);
   display: flex;
   align-items: center;
   gap: 8px;
