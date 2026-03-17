@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import './App.css'
-import { analyzePassword } from './utilities'
+import './App.css';
+import { analyzePassword } from './utilities';
 
 function App() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePassword(password)
+  const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePassword(password);
 
   return (
     <div className="layout">
