@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import './App.css'
+import { analyzePassword } from './utils/analyzePassword'
 
 function App() {
   return (
@@ -48,11 +50,13 @@ function App() {
           <span className="crack-value">XXX</span>
         </div>
 
-        <div className="panel-section-title">Analysis</div>
+        <div className="panel-section-title">Requirements</div>
         <ul className="analysis-list">
-          <li>XXX</li>
-          <li>XXX</li>
-          <li>XXX</li>
+          <li>Minimum Length ({'>='} 16) ✖✔</li>
+          <li>Contains Lowercase Letters ✖</li>
+          <li>Contains Uppercase Letters ✖</li>
+          <li>Contains Numbers ✖</li>
+          <li>Contains Special Characters ✖</li>
         </ul>
 
         <div className="panel-section-title">
