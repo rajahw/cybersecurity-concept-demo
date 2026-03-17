@@ -3,6 +3,11 @@ import './App.css'
 import { analyzePassword } from './utils/analyzePassword'
 
 function App() {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, allCheck, suggestions } = analyzePassword(password)
+
   return (
     <div className="layout">
       {/* LEFT */}
@@ -17,12 +22,24 @@ function App() {
         <div className="form-section">
           <div className="field-group">
             <label>Username</label>
-            <input type="text" placeholder="" autoComplete="off" />
+            <input
+              type="text"
+              placeholder=""
+              autoComplete="off"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
 
           <div className="field-group">
             <label>Password</label>
-            <input type="password" placeholder="" autoComplete="off" />
+            <input
+              type="password"
+              placeholder=""
+              autoComplete="off"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
         </div>
 
@@ -52,11 +69,21 @@ function App() {
 
         <div className="panel-section-title">Requirements</div>
         <ul className="analysis-list">
-          <li>Minimum Length ({'>='} 16) ✖✔</li>
-          <li>Contains Lowercase Letters ✖</li>
-          <li>Contains Uppercase Letters ✖</li>
-          <li>Contains Numbers ✖</li>
-          <li>Contains Special Characters ✖</li>
+          <li className={lengthCheck ? "met" : "unmet"}>
+            {lengthCheck ? "Minimum Length (>= 16) ✔" : "Minimum Length (>= 16) ✖"}
+          </li>
+          <li className={lowercaseCheck ? "met" : "unmet"}>
+            {lowercaseCheck ? "Contains Lowercase Letters ✔" : "Contains Lowercase Letters ✖"}
+          </li>
+          <li className={uppercaseCheck ? "met" : "unmet"}>
+            {uppercaseCheck ? "Contains Uppercase Letters ✔" : "Contains Uppercase Letters ✖"}
+          </li>
+          <li className={numberCheck ? "met" : "unmet"}>
+            {numberCheck ? "Contains Numbers ✔" : "Contains Numbers ✖"}
+          </li>
+          <li className={specialCheck ? "met" : "unmet"}>
+            {specialCheck ? "Contains Special Characters ✔" : "Contains Special Characters ✖"}
+          </li>
         </ul>
 
         <div className="panel-section-title">
@@ -65,9 +92,7 @@ function App() {
         </div>
         <div className="suggestions-box">
           <ul className="suggestions-list">
-            <li>XXX</li>
-            <li>XXX</li>
-            <li>XXX</li>
+            {suggestions.length > 0 ? suggestions.map((item, i) => (<li className={allCheck ? "met" : "unmet"} key={i}>{item}</li>)) : <li>No suggestions ✔</li>}
           </ul>
         </div>
       </div>
