@@ -32,7 +32,5 @@ export function analyzePassword(password: string) {
     if(!specialCheck)
         suggestions.push("Include special characters")
 
-    /*const suggestions: string[] = []*/
-
     return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions }
 }

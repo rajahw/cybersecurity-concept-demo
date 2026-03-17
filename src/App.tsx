@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css'
-import { analyzePassword } from './utils/analyzePassword'
+import { analyzePassword } from './utilities'
 
 function App() {
   const [username, setUsername] = useState('')
