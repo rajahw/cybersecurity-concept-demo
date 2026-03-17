@@ -19,8 +19,21 @@ export function analyzePassword(password: string) {
     const uppercaseCheck = /[A-Z]/.test(password)
     const numberCheck = /[0-9]/.test(password)
     const specialCheck = /[^A-Za-z0-9]/.test(password)
+    const allCheck = lengthCheck && lowercaseCheck && uppercaseCheck && numberCheck && specialCheck
+    const suggestions: string[] = []
+
+    if (!lengthCheck)
+        suggestions.push("Make your password longer")
+    if (!lowercaseCheck)
+        suggestions.push("Include lowercase letters")
+    if(!uppercaseCheck)
+        suggestions.push("Include uppercase letters")
+    if(!numberCheck)
+        suggestions.push("Include numbers")
+    if(!specialCheck)
+        suggestions.push("Include special characters")
 
     /*const suggestions: string[] = []*/
 
-    return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck }
+    return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, allCheck, suggestions }
 }
