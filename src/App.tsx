@@ -1,12 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
-import { analyzePassword } from './utilities';
+import { checkForBreach, analyzePasswordRequirements } from './utilities';
 
 function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePasswordRequirements(password);
+  const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
+  
+  useEffect(() => {
+    async function check() {
+      try {
+        const breached = await checkForBreach(password);
+        setBreachCheck(breached);
+      } catch (error) {
+        console.error(error);
+        setBreachCheck(undefined);
+      }
+    }
+    check();
+  }, [password]);
 
-  const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePassword(password);
+  if (breachCheck === true && (lengthCheck || lowercaseCheck || uppercaseCheck || numberCheck || specialCheck))
+    suggestions.push('PASSWORD FOUND IN A DATA BREACH');
 
   return (
     <div className="layout">
