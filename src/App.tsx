@@ -27,7 +27,7 @@ function App() {
               placeholder=""
               autoComplete="off"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(event) => setUsername(event.target.value)}
             />
           </div>
 
@@ -38,7 +38,7 @@ function App() {
               placeholder=""
               autoComplete="off"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
             />
           </div>
         </div>
@@ -92,7 +92,7 @@ function App() {
         </div>
         <div className="suggestions-box">
           <ul className="suggestions-list">
-            {suggestions.length > 0 ? suggestions.map((item, i) => (<li className="unmet" key={i}>{item}</li>)) : <li className="met">No suggestions ✔</li>}
+            {suggestions.length > 0 ? suggestions.map((item, index) => (<li className="unmet" key={index}>{item}</li>)) : <li className="met">No suggestions ✔</li>}
           </ul>
         </div>
       </div>
