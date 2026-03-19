@@ -38,7 +38,7 @@ export async function checkForBreach(password: string) {
         if (!hashResult)
             return undefined;
 
-        const { prefix, suffix } = hashResult
+        const { prefix, suffix } = hashResult;
         const response = await fetch('https://api.pwnedpasswords.com/range/' + prefix);
 
         if (!response.ok)
