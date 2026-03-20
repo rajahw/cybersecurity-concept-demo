@@ -9,24 +9,6 @@ function LoginPage() {
   const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePasswordRequirements(password);
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
   const navigate = useNavigate();
-  // Change user and password to whatever you'd like.
-  // Match array indices: validUser -> validPass.
-  const validUser = [
-    "admin",
-    "Rajah",
-    "Nandi",
-    "Shawn",
-    "Tashamii",
-    "Latrell",
-  ];
-  const validPass = [
-    "admin",
-    "Rajah",
-    "Nandi",
-    "sleep05",
-    "Tashamii",
-    "Latrell",
-  ];
 
   useEffect(() => {
     async function check() {
@@ -42,23 +24,13 @@ function LoginPage() {
   }, [password]);
 
   function userLogin() {
-    const index = validUser.indexOf(username);
-
-    if (index !== -1 && validPass[index] === password) {
-      navigate("/messages");
-    } else {
-      alert("Invalid username or password! Please try again.");
-    }
+    if (suggestions.length === 0)
+      navigate('/messages');
+    else
+      alert('Invalid password! Please try again.');
   }
 
-  if (
-    breachCheck === true &&
-    (lengthCheck ||
-      lowercaseCheck ||
-      uppercaseCheck ||
-      numberCheck ||
-      specialCheck)
-  )
+  if (breachCheck === true && (lengthCheck || lowercaseCheck || uppercaseCheck || numberCheck || specialCheck))
     suggestions.push('PASSWORD FOUND IN A DATA BREACH');
 
   return (
@@ -130,29 +102,19 @@ function LoginPage() {
         <div className="panel-section-title">Requirements</div>
         <ul className="analysis-list">
           <li className={lengthCheck ? "met" : "unmet"}>
-            {lengthCheck
-              ? "Minimum Length (>= 16) ✔"
-              : "Minimum Length (>= 16) ✖"}
+            {lengthCheck ? "Minimum Length (>= 16) ✔" : "Minimum Length (>= 16) ✖"}
           </li>
           <li className={lowercaseCheck ? "met" : "unmet"}>
-            {lowercaseCheck
-              ? "Contains Lowercase Letters ✔"
-              : "Contains Lowercase Letters ✖"}
+            {lowercaseCheck ? "Contains Lowercase Letters ✔" : "Contains Lowercase Letters ✖"}
           </li>
           <li className={uppercaseCheck ? "met" : "unmet"}>
-            {uppercaseCheck
-              ? "Contains Uppercase Letters ✔"
-              : "Contains Uppercase Letters ✖"}
+            {uppercaseCheck ? "Contains Uppercase Letters ✔" : "Contains Uppercase Letters ✖"}
           </li>
           <li className={numberCheck ? "met" : "unmet"}>
-            {numberCheck
-              ? "Contains Numbers ✔"
-              : "Contains Numbers ✖"}
+            {numberCheck ? "Contains Numbers ✔" : "Contains Numbers ✖"}
           </li>
           <li className={specialCheck ? "met" : "unmet"}>
-            {specialCheck
-              ? "Contains Special Characters ✔"
-              : "Contains Special Characters ✖"}
+            {specialCheck ? "Contains Special Characters ✔" : "Contains Special Characters ✖"}
           </li>
         </ul>
 
