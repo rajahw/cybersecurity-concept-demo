@@ -9,6 +9,7 @@ function LoginPage() {
   const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePasswordRequirements(password);
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
   const navigate = useNavigate();
+  let savedPassword = '';
 
   //HARD-CODED PASSWORDS: CHANGE AS NEEDED TO MAKE ACCOUNT FUNCTIONALITY
 
@@ -30,9 +31,13 @@ function LoginPage() {
     check();
   }, [password]);
 
+  //remove admin access if necessary
   function userLogin() {
-    if (suggestions.length === 0)
+    if (suggestions.length === 0 || password === 'admin') {
+      savedPassword = password;
+      console.log('Password: ' + savedPassword)
       navigate('/messages');
+    }
     else
       alert('Invalid password! Please try again.');
   }
