@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import './App.css';
 import { checkForBreach, analyzePasswordRequirements } from './utilities';
-import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -11,8 +11,22 @@ function LoginPage() {
   const navigate = useNavigate();
   // Change user and password to whatever you'd like.
   // Match array indices: validUser -> validPass.
-  const validUser = ["admin", "Rajah", "Nandi", "Shawn", "Tashamii", "Latrell"]    
-  const validPass = ["admin", "Rajah", "Nandi", "sleep05", "Tashamii", "Latrell"]
+  const validUser = [
+    "admin",
+    "Rajah",
+    "Nandi",
+    "Shawn",
+    "Tashamii",
+    "Latrell",
+  ];
+  const validPass = [
+    "admin",
+    "Rajah",
+    "Nandi",
+    "sleep05",
+    "Tashamii",
+    "Latrell",
+  ];
 
   useEffect(() => {
     async function check() {
@@ -31,71 +45,79 @@ function LoginPage() {
     const index = validUser.indexOf(username);
 
     if (index !== -1 && validPass[index] === password) {
-        navigate("/messages"); 
+      navigate("/messages");
     } else {
-        alert("Invalid username or password! Please try again.");
+      alert("Invalid username or password! Please try again.");
     }
   }
 
-  if (breachCheck === true && (lengthCheck || lowercaseCheck || uppercaseCheck || numberCheck || specialCheck))
+  if (
+    breachCheck === true &&
+    (lengthCheck ||
+      lowercaseCheck ||
+      uppercaseCheck ||
+      numberCheck ||
+      specialCheck)
+  )
     suggestions.push('PASSWORD FOUND IN A DATA BREACH');
 
   return (
     <div className="layout">
       {/* LEFT */}
-        <div className="left">
-            <div className="title-badge">
-                <h1>
-                    Password Strength<br />
-                    Analyzer
-                </h1>
-            </div>
+      <div className="left">
+        <div className="title-badge">
+          <h1>
+            Password Strength<br />
+            Analyzer
+          </h1>
+        </div>
 
-            <div className="form-section">
-            <div className="field-group">
-                <label>Username</label>
-                <input
-                type="text"
-                placeholder=""
-                autoComplete="off"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                />
-            </div>
+        <div className="form-section">
+          <div className="field-group">
+            <label>Username</label>
+            <input
+              type="text"
+              placeholder=""
+              autoComplete="off"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+          </div>
 
-            <div className="field-group">
-                <label>Password</label>
-                <input
-                type="password"
-                placeholder=""
-                autoComplete="off"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                />
-            </div>
-        
-            <div className="strength-section">
-                <span className="strength-label">Strength</span>
-                <div className="strength-track"></div>
-                <div className="strength-fill" style={{ width: '0%' }}></div>
+          <div className="field-group">
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder=""
+              autoComplete="off"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </div>
+
+          <div className="strength-section">
+            <span className="strength-label">Strength</span>
+            <div className="strength-track">
+              <div className="strength-fill" style={{ width: '0%' }}></div>
             </div>
             <div className="strength-ticks">
-                <span className="tick">WEAK</span>
-                <span className="tick">FAIR</span>
-                <span className="tick">GOOD</span>
-                <span className="tick">STRONG</span>
+              <span className="tick">WEAK</span>
+              <span className="tick">FAIR</span>
+              <span className="tick">GOOD</span>
+              <span className="tick">STRONG</span>
             </div>
-            </div>
+          </div>
 
-            <div className="divider"></div>   
+          <div className="divider"></div>
+        </div>
 
-            {/* Login Button */}
-            <div className="login-btn-container">
-                <button className="login-btn" onClick={ userLogin }>
-                    LOGIN
-                </button>
-            </div>  
-        </div>        
+        {/* Login Button */}
+        <div className="login-btn-container">
+          <button className="login-btn" onClick={userLogin}>
+            LOGIN
+          </button>
+        </div>
+      </div>
 
       {/* RIGHT */}
       <div className="right">
@@ -106,34 +128,50 @@ function LoginPage() {
         </div>
 
         <div className="panel-section-title">Requirements</div>
-            <ul className="analysis-list">
-            <li className={lengthCheck ? "met" : "unmet"}>
-                {lengthCheck ? "Minimum Length (>= 16) ✔" : "Minimum Length (>= 16) ✖"}
-            </li>
-            <li className={lowercaseCheck ? "met" : "unmet"}>
-                {lowercaseCheck ? "Contains Lowercase Letters ✔" : "Contains Lowercase Letters ✖"}
-            </li>
-            <li className={uppercaseCheck ? "met" : "unmet"}>
-                {uppercaseCheck ? "Contains Uppercase Letters ✔" : "Contains Uppercase Letters ✖"}
-            </li>
-            <li className={numberCheck ? "met" : "unmet"}>
-                {numberCheck ? "Contains Numbers ✔" : "Contains Numbers ✖"}
-            </li>
-            <li className={specialCheck ? "met" : "unmet"}>
-                {specialCheck ? "Contains Special Characters ✔" : "Contains Special Characters ✖"}
-            </li>
-            </ul>
+        <ul className="analysis-list">
+          <li className={lengthCheck ? "met" : "unmet"}>
+            {lengthCheck
+              ? "Minimum Length (>= 16) ✔"
+              : "Minimum Length (>= 16) ✖"}
+          </li>
+          <li className={lowercaseCheck ? "met" : "unmet"}>
+            {lowercaseCheck
+              ? "Contains Lowercase Letters ✔"
+              : "Contains Lowercase Letters ✖"}
+          </li>
+          <li className={uppercaseCheck ? "met" : "unmet"}>
+            {uppercaseCheck
+              ? "Contains Uppercase Letters ✔"
+              : "Contains Uppercase Letters ✖"}
+          </li>
+          <li className={numberCheck ? "met" : "unmet"}>
+            {numberCheck
+              ? "Contains Numbers ✔"
+              : "Contains Numbers ✖"}
+          </li>
+          <li className={specialCheck ? "met" : "unmet"}>
+            {specialCheck
+              ? "Contains Special Characters ✔"
+              : "Contains Special Characters ✖"}
+          </li>
+        </ul>
 
-            <div className="panel-section-title">
-            Suggestions for<br />
-            Improvement
-            </div>
-            <div className="suggestions-box">
-            <ul className="suggestions-list">
-                {suggestions.length > 0 ? suggestions.map((item, index) => (<li className="unmet" key={index}>{item}</li>)) : <li className="met">No suggestions ✔</li>}
-            </ul>
-            </div>
+        <div className="panel-section-title">
+          Suggestions for<br />
+          Improvement
         </div>
+        <div className="suggestions-box">
+          <ul className="suggestions-list">
+            {suggestions.length > 0
+              ? suggestions.map((item, index) => (
+                  <li className="unmet" key={index}>
+                    {item}
+                  </li>
+                ))
+              : <li className="met">No suggestions ✔</li>}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
