@@ -10,6 +10,13 @@ function LoginPage() {
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
   const navigate = useNavigate();
 
+  //HARD-CODED PASSWORDS: CHANGE AS NEEDED TO MAKE ACCOUNT FUNCTIONALITY
+
+  /*
+  const validUser = ["admin", "Rajah", "Nandi", "Shawn", "Tashamii", "Latrell"]    
+  const validPass = ["admin", "Rajah", "Nandi", "sleep05", "Tashamii", "Latrell"]
+  */
+
   useEffect(() => {
     async function check() {
       try {
