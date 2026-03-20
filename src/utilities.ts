@@ -75,3 +75,61 @@ export function analyzePasswordRequirements(password: string) {
 
     return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions };
 }
+
+export interface Message {
+    id: string;
+    content: string;
+    timestamp: number;
+}
+
+export interface TimeComponents {
+    month: string;
+    day: string;
+    year: number;
+    hours: string;
+    minutes: string;
+}
+
+export function addMessage(content: string): Message {
+    const message = getMessages();
+    const newMessage: Message = {
+        id: Date.now().toString(), content,
+        timestamp: Date.now()
+    };
+    messages.push(newMessage);
+    localStorage.setItem('messages', JSON.stringify(messages));
+    return newMessage;
+}
+
+export function getMessages(): Message[] {
+    try {
+        const messages = localStorage.getItem('messages');
+        return messages ? JSON.parse(messages) : [];
+    } catch (error) {
+        console.error('Error retrieving messages:', error);
+        return [];
+    }
+}
+
+export function deleteMessage(id: string): void {
+    const messages = getMessages();
+    const filtered = messages.filter(msg => msg.id !== id);
+    localStorage.setItem('messages', JSON.stringify(filtered));
+}
+
+export function formatTimestamp(timestamp: number): TimeComponents {
+    const date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    return { month, day, year, hours, minutes };
+}
+
+export function searchMessages(query: string): Message[] {
+    const messages = getMessages();
+    const lowerQuery = query.toLowerCase();
+    return messages.filter(msg => mesg.content.toLowerCase().includes(lowerQuery));
+}
