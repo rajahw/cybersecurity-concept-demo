@@ -4,7 +4,7 @@ function MessagePage() {
     const navigate = useNavigate();
 
     function userLogout() {
-        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        const confirmLogout = window.confirm('Are you sure you want to logout?');
         if (confirmLogout) {
             navigate("/");
         }
