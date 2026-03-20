@@ -150,3 +150,65 @@ body::after {
   .layout { grid-template-columns: 1fr; }
   .title-badge h1 { font-size: 2.2rem; }
 }
+
+.login-btn-container {
+  display: flex;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.login-btn {
+  display: block;
+  margin: 0 auto;
+  width: 60%;
+  padding: 18px 0;
+  font-size: 1.2rem;
+  font-family: var(--tech);
+  font-weight: bold;
+  color: var(--text-dark);
+  background: var(--gold-light);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.login-btn:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+.logout-btn-container {
+  display: flex;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.logout-btn {
+  display: block;
+  margin: 0 auto;
+  width: 60%;
+  padding: 18px 0;
+  font-size: 1.2rem;
+  font-family: var(--tech);
+  font-weight: bold;
+  color: var(--text-dark);
+  background: var(--gold-light);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
