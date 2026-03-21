@@ -98,6 +98,7 @@ export function addMessage(content: string): Message {
     };
     messages.push(newMessage);
     localStorage.setItem('messages', JSON.stringify(messages));
+    
     return newMessage;
 }
 
@@ -131,5 +132,6 @@ export function formatTimestamp(timestamp: number): TimeComponents {
 export function searchMessages(query: string): Message[] {
     const messages = getMessages();
     const lowerQuery = query.toLowerCase();
+
     return messages.filter(msg => msg.content.toLowerCase().includes(lowerQuery));
 }
