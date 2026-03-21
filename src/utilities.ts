@@ -91,7 +91,7 @@ export interface TimeComponents {
 }
 
 export function addMessage(content: string): Message {
-    const message = getMessages();
+    const messages = getMessages();
     const newMessage: Message = {
         id: Date.now().toString(), content,
         timestamp: Date.now()
@@ -131,5 +131,5 @@ export function formatTimestamp(timestamp: number): TimeComponents {
 export function searchMessages(query: string): Message[] {
     const messages = getMessages();
     const lowerQuery = query.toLowerCase();
-    return messages.filter(msg => mesg.content.toLowerCase().includes(lowerQuery));
+    return messages.filter(msg => msg.content.toLowerCase().includes(lowerQuery));
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { addMessage, getMessages, deleteMessage, formatTimestamp, Message } from './utilities';
+import { addMessage, getMessages, deleteMessage, formatTimestamp } from './utilities';
+import type { Message } from './utilities';
 
 function MessagePage() {
     const navigate = useNavigate();
