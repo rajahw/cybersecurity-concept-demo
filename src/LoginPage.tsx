@@ -122,7 +122,7 @@ function LoginPage({ onLogin }: LoginPageProps) {
         <div className="panel-section-title">Requirements</div>
         <ul className="analysis-list">
           <li className={lengthCheck ? "met" : "unmet"}>
-            {lengthCheck ? "Minimum Length (>= 16) ✔" : "Minimum Length (>= 16) ✖"}
+            {lengthCheck ? "Minimum Length (>= 12) ✔" : "Minimum Length (>= 12) ✖"}
           </li>
           <li className={lowercaseCheck ? "met" : "unmet"}>
             {lowercaseCheck ? "Contains Lowercase Letters ✔" : "Contains Lowercase Letters ✖"}

@@ -40,7 +40,7 @@ export async function checkForBreach(password: string) {
 }
 
 export function analyzePasswordRequirements(password: string) {
-    const lengthCheck = password.length >= 16;
+    const lengthCheck = password.length >= 12;
     const lowercaseCheck = /[a-z]/.test(password);
     const uppercaseCheck = /[A-Z]/.test(password);
     const numberCheck = /[0-9]/.test(password);
