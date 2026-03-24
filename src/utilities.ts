@@ -76,22 +76,22 @@ export function analyzePasswordRequirements(password: string) {
     return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions };
 }
 
-export function getScore(lengthCheck : boolean, lowercaseCheck : boolean, uppercaseCheck : boolean, numberCheck : boolean, specialCheck : boolean, breachCheck : boolean) {
+export function getScore(lengthCheck: boolean, lowercaseCheck: boolean, uppercaseCheck: boolean, numberCheck: boolean, specialCheck: boolean, breachCheck: boolean) {
     let score = 0;
-
-    if (!lengthCheck)
-        score += 3;
-    if (!lowercaseCheck)
-        score += 3;
-    if(!uppercaseCheck)
-        score += 3;
-    if(!numberCheck)
-        score += 3;
-    if(!specialCheck)
-        score += 3;
-    if (!breachCheck)
-        score += 5;
-
+    
+    if (lengthCheck)
+        score += 15;
+    if (lowercaseCheck)
+        score += 15;
+    if(uppercaseCheck)
+        score += 15;
+    if(numberCheck)
+        score += 15;
+    if(specialCheck)
+        score += 15;
+    if (breachCheck === false)
+        score += 25;
+    
     return score;
 }
 

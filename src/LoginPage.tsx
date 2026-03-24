@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './App.css';
-import { checkForBreach, analyzePasswordRequirements } from './utilities';
+import { checkForBreach, analyzePasswordRequirements, getScore } from './utilities';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePasswordRequirements(password);
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
+  const score = getScore(lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, breachCheck);
   const navigate = useNavigate();
   let savedPassword = '';
 
@@ -82,7 +83,12 @@ function LoginPage() {
           <div className="strength-section">
             <span className="strength-label">Strength</span>
             <div className="strength-track">
-              <div className="strength-fill" style={{ width: '50%' }}></div>
+              <div className={
+                score === 100 ? "strength-fill-strong" :
+                score >= 60 ? "strength-fill-good" :
+                score >= 45 ? "strength-fill-fair" :
+                "strength-fill-weak"
+              } style={{width: `${score}%`}}></div>
             </div>
             <div className="strength-ticks">
               <span className="tick">WEAK</span>
