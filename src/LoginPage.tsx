@@ -35,7 +35,7 @@ function LoginPage() {
   function userLogin() {
     if (suggestions.length === 0 || password === 'admin') {
       savedPassword = password;
-      console.log('Password: ' + savedPassword)
+      console.log('Password: ' + savedPassword);
       navigate('/messages');
     }
     else
@@ -82,7 +82,7 @@ function LoginPage() {
           <div className="strength-section">
             <span className="strength-label">Strength</span>
             <div className="strength-track">
-              <div className="strength-fill" style={{ width: '0%' }}></div>
+              <div className="strength-fill" style={{ width: '50%' }}></div>
             </div>
             <div className="strength-ticks">
               <span className="tick">WEAK</span>
