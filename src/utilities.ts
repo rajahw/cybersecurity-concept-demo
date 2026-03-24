@@ -47,7 +47,7 @@ export async function checkForBreach(password: string) {
         const passwords = await response.text();
         const passwordArray = passwords.split('\n');
 
-        return passwordArray.some(index => index.startsWith(suffix))
+        return passwordArray.some(index => index.startsWith(suffix));
     } catch (error) {
         console.error(error);
         return undefined;
@@ -74,6 +74,25 @@ export function analyzePasswordRequirements(password: string) {
         suggestions.push('Include special characters');
 
     return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions };
+}
+
+export function getScore(lengthCheck : boolean, lowercaseCheck : boolean, uppercaseCheck : boolean, numberCheck : boolean, specialCheck : boolean, breachCheck : boolean) {
+    let score = 0;
+
+    if (!lengthCheck)
+        score += 3;
+    if (!lowercaseCheck)
+        score += 3;
+    if(!uppercaseCheck)
+        score += 3;
+    if(!numberCheck)
+        score += 3;
+    if(!specialCheck)
+        score += 3;
+    if (!breachCheck)
+        score += 5;
+
+    return score;
 }
 
 export interface Message {
