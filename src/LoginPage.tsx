@@ -3,14 +3,17 @@ import { useNavigate } from "react-router-dom";
 import './App.css';
 import { checkForBreach, analyzePasswordRequirements, getScore } from './utilities';
 
-function LoginPage() {
+interface LoginPageProps {
+  onLogin: (username: string) => void;
+}
+
+function LoginPage({ onLogin }: LoginPageProps) {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePasswordRequirements(password);
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
   const score = getScore(lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, breachCheck);
-  const navigate = useNavigate();
-  let savedPassword = '';
 
   //HARD-CODED PASSWORDS: CHANGE AS NEEDED TO MAKE ACCOUNT FUNCTIONALITY
 
@@ -34,13 +37,12 @@ function LoginPage() {
 
   //remove admin access if necessary
   function userLogin() {
-    if (suggestions.length === 0 || password === 'admin') {
-      savedPassword = password;
-      console.log('Password: ' + savedPassword);
+    if (username.trim() && (suggestions.length === 0 || password === 'admin')) {
+      onLogin(username);
       navigate('/messages');
     }
     else
-      alert('Invalid password! Please try again.');
+      alert('Invalid username or password! Please try again.');
   }
 
   if (breachCheck === true && (lengthCheck || lowercaseCheck || uppercaseCheck || numberCheck || specialCheck))

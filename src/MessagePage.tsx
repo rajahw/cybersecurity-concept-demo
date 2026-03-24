@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { addMessage, getMessages, deleteMessage, formatTimestamp } from './utilities';
 import type { Message } from './utilities';
 
-function MessagePage() {
+interface MessagePageProps {
+    savedUsername: string;
+}
+
+function MessagePage({ savedUsername }: MessagePageProps) {
     const navigate = useNavigate();
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');

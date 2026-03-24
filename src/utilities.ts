@@ -1,18 +1,3 @@
-/* 
-    PASSWORD REQUIREMENTS:
-    >= 16 chars
-    uppercase letter
-    lowercase letter
-    number
-    special char
-  
-    SCORE THRESHOLDS:
-    > 90 = STRONG
-    > 75 = GOOD
-    > 60 = FAIR
-    <= 60 = WEAK
-*/
-
 async function createPasswordHash(password: string) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -76,7 +61,7 @@ export function analyzePasswordRequirements(password: string) {
     return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions };
 }
 
-export function getScore(lengthCheck: boolean, lowercaseCheck: boolean, uppercaseCheck: boolean, numberCheck: boolean, specialCheck: boolean, breachCheck: boolean) {
+export function getScore(lengthCheck: boolean, lowercaseCheck: boolean, uppercaseCheck: boolean, numberCheck: boolean, specialCheck: boolean, breachCheck: boolean | undefined) {
     let score = 0;
     
     if (lengthCheck)
