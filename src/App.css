@@ -345,7 +345,7 @@ body::after {
   background: var(--panel-bg);
   padding: 20px;
   border-radius: 16px;
-  border: 2px solider var(--gold);
+  border: 2px solid var(--gold);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
@@ -364,13 +364,13 @@ body::after {
 }
 
 .message-input:focus {
-  bprder-color: var(--requirement-met);
+  border-color: var(--requirement-met);
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
 }
 
 .message-input::placeholder {
   color: #999;
-  opacity: 0.7s;
+  opacity: 0.7;
 }
 
 .send-btn {
@@ -396,15 +396,15 @@ body::after {
   transform: translateY(0);
 ]
 
-.send-btn: disabled {
-  opacity: 0.5s;
+.send-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
   .messagePage {
     height: auto;
-    min-heigth: 100vh;
+    min-height: 100vh;
   }
 
   .message-header h1 {
