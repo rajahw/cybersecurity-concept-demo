@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './App.css';
-import { checkForBreach, analyzePasswordRequirements } from './utilities';
+import { checkForBreach, analyzePasswordRequirements, getScore } from './utilities';
 
-function LoginPage() {
+interface LoginPageProps {
+  onLogin: (username: string) => void;
+}
+
+function LoginPage({ onLogin }: LoginPageProps) {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePasswordRequirements(password);
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
-  const navigate = useNavigate();
+  const score = getScore(lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, breachCheck);
 
   //HARD-CODED PASSWORDS: CHANGE AS NEEDED TO MAKE ACCOUNT FUNCTIONALITY
 
@@ -30,11 +35,14 @@ function LoginPage() {
     check();
   }, [password]);
 
+  //remove admin access if necessary
   function userLogin() {
-    if (suggestions.length === 0)
+    if (username.trim() && (suggestions.length === 0 || password === 'admin')) {
+      onLogin(username);
       navigate('/messages');
+    }
     else
-      alert('Invalid password! Please try again.');
+      alert('Invalid username or password! Please try again.');
   }
 
   if (breachCheck === true && (lengthCheck || lowercaseCheck || uppercaseCheck || numberCheck || specialCheck))
@@ -77,7 +85,12 @@ function LoginPage() {
           <div className="strength-section">
             <span className="strength-label">Strength</span>
             <div className="strength-track">
-              <div className="strength-fill" style={{ width: '0%' }}></div>
+              <div className={
+                score === 100 ? "strength-fill-strong" :
+                score >= 60 ? "strength-fill-good" :
+                score >= 45 ? "strength-fill-fair" :
+                "strength-fill-weak"
+              } style={{width: `${score}%`}}></div>
             </div>
             <div className="strength-ticks">
               <span className="tick">WEAK</span>
@@ -109,7 +122,7 @@ function LoginPage() {
         <div className="panel-section-title">Requirements</div>
         <ul className="analysis-list">
           <li className={lengthCheck ? "met" : "unmet"}>
-            {lengthCheck ? "Minimum Length (>= 16) ✔" : "Minimum Length (>= 16) ✖"}
+            {lengthCheck ? "Minimum Length (>= 12) ✔" : "Minimum Length (>= 12) ✖"}
           </li>
           <li className={lowercaseCheck ? "met" : "unmet"}>
             {lowercaseCheck ? "Contains Lowercase Letters ✔" : "Contains Lowercase Letters ✖"}

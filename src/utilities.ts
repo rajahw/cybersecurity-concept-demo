@@ -1,18 +1,3 @@
-/* 
-    PASSWORD REQUIREMENTS:
-    >= 16 chars
-    uppercase letter
-    lowercase letter
-    number
-    special char
-  
-    SCORE THRESHOLDS:
-    > 90 = STRONG
-    > 75 = GOOD
-    > 60 = FAIR
-    <= 60 = WEAK
-*/
-
 async function createPasswordHash(password: string) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -47,7 +32,7 @@ export async function checkForBreach(password: string) {
         const passwords = await response.text();
         const passwordArray = passwords.split('\n');
 
-        return passwordArray.some(index => index.startsWith(suffix))
+        return passwordArray.some(index => index.startsWith(suffix));
     } catch (error) {
         console.error(error);
         return undefined;
@@ -55,7 +40,7 @@ export async function checkForBreach(password: string) {
 }
 
 export function analyzePasswordRequirements(password: string) {
-    const lengthCheck = password.length >= 16;
+    const lengthCheck = password.length >= 12;
     const lowercaseCheck = /[a-z]/.test(password);
     const uppercaseCheck = /[A-Z]/.test(password);
     const numberCheck = /[0-9]/.test(password);
@@ -74,4 +59,83 @@ export function analyzePasswordRequirements(password: string) {
         suggestions.push('Include special characters');
 
     return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions };
+}
+
+export function getScore(lengthCheck: boolean, lowercaseCheck: boolean, uppercaseCheck: boolean, numberCheck: boolean, specialCheck: boolean, breachCheck: boolean | undefined) {
+    let score = 0;
+    
+    if (lengthCheck)
+        score += 15;
+    if (lowercaseCheck)
+        score += 15;
+    if(uppercaseCheck)
+        score += 15;
+    if(numberCheck)
+        score += 15;
+    if(specialCheck)
+        score += 15;
+    if (breachCheck === false)
+        score += 25;
+    
+    return score;
+}
+
+export interface Message {
+    id: string;
+    content: string;
+    timestamp: number;
+}
+
+export interface TimeComponents {
+    month: string;
+    day: string;
+    year: number;
+    hours: string;
+    minutes: string;
+}
+
+export function addMessage(content: string): Message {
+    const messages = getMessages();
+    const newMessage: Message = {
+        id: Date.now().toString(), content,
+        timestamp: Date.now()
+    };
+    messages.push(newMessage);
+    localStorage.setItem('messages', JSON.stringify(messages));
+    
+    return newMessage;
+}
+
+export function getMessages(): Message[] {
+    try {
+        const messages = localStorage.getItem('messages');
+        return messages ? JSON.parse(messages) : [];
+    } catch (error) {
+        console.error('Error retrieving messages:', error);
+        return [];
+    }
+}
+
+export function deleteMessage(id: string): void {
+    const messages = getMessages();
+    const filtered = messages.filter(msg => msg.id !== id);
+    localStorage.setItem('messages', JSON.stringify(filtered));
+}
+
+export function formatTimestamp(timestamp: number): TimeComponents {
+    const date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    return { month, day, year, hours, minutes };
+}
+
+export function searchMessages(query: string): Message[] {
+    const messages = getMessages();
+    const lowerQuery = query.toLowerCase();
+
+    return messages.filter(msg => msg.content.toLowerCase().includes(lowerQuery));
 }

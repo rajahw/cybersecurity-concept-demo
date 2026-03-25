@@ -15,6 +15,10 @@
   --border: #3a3a4e;
   --requirement-met: #00ff1e;
   --requirement-unmet: #ff4000;
+  --weak: #ff4000;
+  --fair: #ff9500;
+  --good: #ffcc00;
+  --strong: #00ff1e;
 }
 
 * {
@@ -125,11 +129,28 @@ body {
   border: 1px solid var(--border);
 }
 
-.strength-fill {
+.strength-fill-weak {
   height: 100%;
-  background: var(--gold);
+  background: var(--weak);
   border-radius: 5px;
-  transition: width 0.3s ease;
+}
+
+.strength-fill-fair {
+  height: 100%;
+  background: var(--fair);
+  border-radius: 5px;
+}
+
+.strength-fill-good {
+  height: 100%;
+  background: var(--good);
+  border-radius: 5px;
+}
+
+.strength-fill-strong {
+  height: 100%;
+  background: var(--strong);
+  border-radius: 5px;
 }
 
 .strength-ticks {
