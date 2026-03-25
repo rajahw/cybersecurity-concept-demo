@@ -265,6 +265,8 @@ body::after {
   flex-direction: column;
   gap: 10px;
   animation: slideIn 0.3s ease;
+  max-width: 60%;
+  word-wrap: break-word;
 }
 
 @keyframes slideIn {
@@ -289,6 +291,7 @@ body::after {
   margin: 0;
   word-wrap: break-word;
   line-height: 1.5;
+  word-break: break-word;
 }
 
 .message-footer {
