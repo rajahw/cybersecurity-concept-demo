@@ -3,14 +3,11 @@ import {useNavigate} from 'react-router-dom';
 import {addMessage, getMessages, deleteMessage, formatTimestamp} from './utilities';
 import type {Message} from './utilities';
 
-interface MessagePageProps {
-    savedUsername: string;
-}
-
-function MessagePage({savedUsername}: MessagePageProps) {
+function MessagePage() {
     const navigate = useNavigate();
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
+    const username = localStorage.getItem('username') || '';
 
     useEffect(() => {
         loadMessages();
@@ -23,7 +20,7 @@ function MessagePage({savedUsername}: MessagePageProps) {
 
     function handleSendMessage() {
         if (inputValue.trim()) {
-            addMessage(savedUsername, inputValue);
+            addMessage(inputValue);
             setInputValue('');
             loadMessages();
         }
@@ -37,13 +34,14 @@ function MessagePage({savedUsername}: MessagePageProps) {
     function userLogout() {
         const confirmLogout = window.confirm('Are you sure you want to logout?');
         if (confirmLogout) {
-            navigate("/");
+            localStorage.removeItem('username');
+            navigate('/');
         }
     }
 
-    function handleKeyPress(e: React.KeyboardEvent) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
+    function handleKeyPress(event: React.KeyboardEvent) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
             handleSendMessage();
         }
     }
@@ -65,15 +63,17 @@ function MessagePage({savedUsername}: MessagePageProps) {
                                     <p>{message.content}</p>
                                 </div>
                                 <div className="message-footer">
-                                    <span className="message-timestamp">
-                                        {time.month}/{time.day}/{time.year} {time.hours}:{time.minutes}
+                                    <span className="message-info">
+                                        <span>
+                                            {username}<br />{time.month}/{time.day}/{time.year} {time.hours}:{time.minutes}
+                                        </span>
                                     </span>
                                     <button
                                         className="delete-button"
                                         onClick={() => handleDeleteMessage(message.id)}
                                         title="Delete message"
                                     >
-                                        🗑️
+                                    🗑️
                                     </button>
                                 </div>
                             </li>
@@ -91,7 +91,7 @@ function MessagePage({savedUsername}: MessagePageProps) {
             <textarea
                 className="message-input"
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                onChange={(event) => setInputValue(event.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder="Type your message here... (Press Enter to send)"
                 rows={3}

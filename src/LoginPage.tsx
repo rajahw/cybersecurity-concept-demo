@@ -3,11 +3,7 @@ import {useNavigate} from "react-router-dom";
 import './App.css';
 import {checkForBreach, analyzePasswordRequirements, getScore} from './utilities';
 
-interface LoginPageProps {
-  onLogin: (username: string) => void;
-}
-
-function LoginPage({onLogin}: LoginPageProps) {
+function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -104,8 +100,8 @@ function LoginPage({onLogin}: LoginPageProps) {
         </div>
 
         {/* Login Button */}
-        <div className="login-btn-container">
-          <button className="login-btn" onClick={userLogin}>
+        <div className="login-button-container">
+          <button className="login-button" onClick={userLogin}>
             LOGIN
           </button>
         </div>

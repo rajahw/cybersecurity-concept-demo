@@ -301,7 +301,7 @@ body::after {
   gap: 10px;
 }
 
-.message-timestamp {
+.message-info {
   font-family: var(--tech);
   font-size: 0.85rem;
   color: #888;

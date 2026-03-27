@@ -149,7 +149,6 @@ export function getScore(lengthCheck: boolean, lowercaseCheck: boolean, uppercas
 }
 
 export interface Message {
-    username: string;
     id: string;
     content: string;
     timestamp: number;
@@ -163,10 +162,9 @@ export interface TimeComponents {
     minutes: string;
 }
 
-export function addMessage(username: string, content: string): Message {
+export function addMessage(content: string): Message {
     const messages = getMessages();
     const newMessage: Message = {
-        username,
         id: Date.now().toString(),
         content,
         timestamp: Date.now()
