@@ -56,7 +56,7 @@ export async function encryptMessageRSA(message: string) {
                 modulusLength: 2048,
                 publicExponent: new Uint8Array([1, 0, 1]),
                 hash: 'SHA-256'
-           },
+            },
             true,
             ['encrypt', 'decrypt']
         );
@@ -149,6 +149,7 @@ export function getScore(lengthCheck: boolean, lowercaseCheck: boolean, uppercas
 }
 
 export interface Message {
+    username: string;
     id: string;
     content: string;
     timestamp: number;
@@ -162,12 +163,14 @@ export interface TimeComponents {
     minutes: string;
 }
 
-export function addMessage(content: string): Message {
+export function addMessage(username: string, content: string): Message {
     const messages = getMessages();
     const newMessage: Message = {
-        id: Date.now().toString(), content,
+        username,
+        id: Date.now().toString(),
+        content,
         timestamp: Date.now()
-   };
+    };
     messages.push(newMessage);
     localStorage.setItem('messages', JSON.stringify(messages));
     
