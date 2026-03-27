@@ -1,6 +1,7 @@
 import {Routes, Route} from 'react-router-dom';
 import LoginPage from './LoginPage';
 import MessagePage from './MessagePage';
+import './App.css';
 
 function App() {
   function saveUsername(username: string) {

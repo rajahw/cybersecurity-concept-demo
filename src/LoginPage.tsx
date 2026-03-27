@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
-import './App.css';
 import {checkForBreach, analyzePasswordRequirements, getScore} from './utilities';
+import './LoginPage.css';
 
 function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
   const navigate = useNavigate();
@@ -10,13 +10,6 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
   const {lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions} = analyzePasswordRequirements(password);
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
   const score = getScore(lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, breachCheck);
-
-  //HARD-CODED PASSWORDS: CHANGE AS NEEDED TO MAKE ACCOUNT FUNCTIONALITY
-
-  /*
-  const validUser = ["admin", "Rajah", "Nandi", "Shawn", "Tashamii", "Latrell"]    
-  const validPass = ["admin", "Rajah", "Nandi", "sleep05", "Tashamii", "Latrell"]
-  */
 
   useEffect(() => {
     async function check() {
@@ -46,8 +39,7 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
 
   return (
     <div className="layout">
-      {/* LEFT */}
-      <div className="left">
+      <div className="login-left">
         <div className="title-badge">
           <h1>
             Password Strength<br />
@@ -99,7 +91,6 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
           <div className="divider"></div>
         </div>
 
-        {/* Login Button */}
         <div className="login-button-container">
           <button className="login-button" onClick={userLogin}>
             LOGIN
@@ -107,8 +98,7 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
         </div>
       </div>
 
-      {/* RIGHT */}
-      <div className="right">
+      <div className="login-right">
         <div className="panel-section-title">Time to Crack</div>
 
         <div className="crack-box">
