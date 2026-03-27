@@ -10,11 +10,79 @@ async function createPasswordHash(password: string) {
         const prefix = hashText.slice(0, 5);
         const suffix = hashText.slice(5);
 
-        return { prefix, suffix };
-    } catch (error) {
+        return {prefix, suffix};
+   } catch (error) {
         console.error(error);
         return undefined;
-    }
+   }
+}
+
+export async function encryptMessageAES(message: string) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(message);
+    
+    try {
+        const key = await crypto.subtle.generateKey(
+            {name: 'AES-GCM', length: 256},
+            true,
+            ['encrypt', 'decrypt']
+        );
+
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const encrypted = await crypto.subtle.encrypt(
+            {name: 'AES-GCM', iv},
+            key,
+            data
+        );
+
+        const byteArray = Array.from(new Uint8Array(encrypted));
+        const encryptedMessage = byteArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+
+        return {message, encryptedMessage};
+   } catch (error) {
+        console.error(error);
+        return undefined;
+   }
+}
+
+export async function encryptMessageRSA(message: string) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(message);
+
+    try {
+        const keyPair = await crypto.subtle.generateKey(
+            {
+                name: 'RSA-OAEP',
+                modulusLength: 2048,
+                publicExponent: new Uint8Array([1, 0, 1]),
+                hash: 'SHA-256'
+           },
+            true,
+            ['encrypt', 'decrypt']
+        );
+    
+        const publicKey = keyPair.publicKey;
+        const privateKey = keyPair.privateKey;
+
+        const encrypted = await crypto.subtle.encrypt(
+            {name: 'RSA-OAEP'},
+            publicKey,
+            data
+        );
+
+        const decoder = new TextDecoder();
+        const encryptedMessage = decoder.decode(encrypted);
+        const decryptedMessage = message;
+        const publicKeyArray = await crypto.subtle.exportKey('spki', publicKey);
+        const publicKeyText = btoa(String.fromCharCode(...new Uint8Array(publicKeyArray)));
+        const privateKeyArray = await crypto.subtle.exportKey('spki', privateKey);
+        const privateKeyText = btoa(String.fromCharCode(...new Uint8Array(privateKeyArray)));
+
+        return {encryptedMessage, decryptedMessage, publicKeyText, privateKeyText};
+   } catch (error) {
+        console.error(error);
+        return undefined;
+   }
 }
 
 export async function checkForBreach(password: string) {
@@ -23,7 +91,7 @@ export async function checkForBreach(password: string) {
         if (!hashResult)
             return undefined;
 
-        const { prefix, suffix } = hashResult;
+        const {prefix, suffix} = hashResult;
         const response = await fetch('https://api.pwnedpasswords.com/range/' + prefix);
 
         if (!response.ok)
@@ -33,10 +101,10 @@ export async function checkForBreach(password: string) {
         const passwordArray = passwords.split('\n');
 
         return passwordArray.some(index => index.startsWith(suffix));
-    } catch (error) {
+   } catch (error) {
         console.error(error);
         return undefined;
-    }
+   }
 }
 
 export function analyzePasswordRequirements(password: string) {
@@ -58,7 +126,7 @@ export function analyzePasswordRequirements(password: string) {
     if(!specialCheck)
         suggestions.push('Include special characters');
 
-    return { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions };
+    return {lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions};
 }
 
 export function getScore(lengthCheck: boolean, lowercaseCheck: boolean, uppercaseCheck: boolean, numberCheck: boolean, specialCheck: boolean, breachCheck: boolean | undefined) {
@@ -99,7 +167,7 @@ export function addMessage(content: string): Message {
     const newMessage: Message = {
         id: Date.now().toString(), content,
         timestamp: Date.now()
-    };
+   };
     messages.push(newMessage);
     localStorage.setItem('messages', JSON.stringify(messages));
     
@@ -110,10 +178,10 @@ export function getMessages(): Message[] {
     try {
         const messages = localStorage.getItem('messages');
         return messages ? JSON.parse(messages) : [];
-    } catch (error) {
+   } catch (error) {
         console.error('Error retrieving messages:', error);
         return [];
-    }
+   }
 }
 
 export function deleteMessage(id: string): void {
@@ -130,7 +198,7 @@ export function formatTimestamp(timestamp: number): TimeComponents {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
 
-    return { month, day, year, hours, minutes };
+    return {month, day, year, hours, minutes};
 }
 
 export function searchMessages(query: string): Message[] {

@@ -69,7 +69,7 @@ function MessagePage({ savedUsername }: MessagePageProps) {
                                         {time.month}/{time.day}/{time.year} {time.hours}:{time.minutes}
                                     </span>
                                     <button
-                                        className="delete-btn"
+                                        className="delete-button"
                                         onClick={() => handleDeleteMessage(message.id)}
                                         title="Delete message"
                                     >
@@ -92,12 +92,12 @@ function MessagePage({ savedUsername }: MessagePageProps) {
                 className="message-input"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
                 placeholder="Type your message here... (Press Enter to send)"
                 rows={3}
             />
             <button
-                className="send-btnz"
+                className="send-button"
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim()}
             >
@@ -105,8 +105,8 @@ function MessagePage({ savedUsername }: MessagePageProps) {
             </button>
         </div>
 
-        <div className="logout-btn-container">
-              <button className="logout-btn" onClick={userLogout}>
+        <div className="logout-button-container">
+              <button className="logout-button" onClick={userLogout}>
                 LOGOUT
               </button>
         </div>
