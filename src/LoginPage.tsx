@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import {useState, useEffect} from 'react';
+import {useNavigate} from "react-router-dom";
 import './App.css';
-import { checkForBreach, analyzePasswordRequirements, getScore } from './utilities';
+import {checkForBreach, analyzePasswordRequirements, getScore} from './utilities';
 
 interface LoginPageProps {
   onLogin: (username: string) => void;
 }
 
-function LoginPage({ onLogin }: LoginPageProps) {
+function LoginPage({onLogin}: LoginPageProps) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions } = analyzePasswordRequirements(password);
+  const {lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions} = analyzePasswordRequirements(password);
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
   const score = getScore(lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, breachCheck);
 
