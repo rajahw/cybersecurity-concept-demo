@@ -35,6 +35,7 @@ function MessagePage() {
         const confirmLogout = window.confirm('Are you sure you want to logout?');
         if (confirmLogout) {
             localStorage.removeItem('username');
+            localStorage.removeItem('messages');
             navigate('/');
         }
     }
