@@ -50,6 +50,7 @@
   flex-direction: column;
   gap: 22px;
   position: relative;
+  max-height: 80vh;
   box-shadow:
     0 0 0 2.5px var(--gold),
     inset 0 0 0 2px var(--red-dark),
@@ -57,8 +58,8 @@
 }
 
 .messages-container {
-  flex: 1;
   overflow-y: auto;
+  min-height: 0;
   background: var(--gold-light);
   border-radius: 16px;
   padding: 20px;
