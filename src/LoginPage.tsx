@@ -78,7 +78,7 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
                 score >= 60 ? "strength-fill-good" :
                 score >= 45 ? "strength-fill-fair" :
                 "strength-fill-weak"
-              } style={{width: `${score}%`}}></div>
+              } style={{width: `${score}%`}} />
             </div>
             <div className="strength-ticks">
               <span className="tick">WEAK</span>
@@ -87,14 +87,26 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
               <span className="tick">STRONG</span>
             </div>
           </div>
-
-          <div className="divider"></div>
         </div>
+
+        <div className="divider" />
 
         <div className="login-button-container">
           <button className="login-button" onClick={userLogin}>
             LOGIN
           </button>
+        </div>
+
+        <div className="tip">
+          Use "admin" as a password to bypass the requirements
+        </div>
+
+        <div className="divider" />
+
+        <div className="learn-more-button-container">
+          <a className="learn-more-button" href="https://pages.nist.gov/800-63-4/sp800-63b/passwords/" target="_blank" rel="noopener noreferrer">
+            LEARN MORE
+          </a>
         </div>
       </div>
 
@@ -125,8 +137,7 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
         </ul>
 
         <div className="panel-section-title">
-          Suggestions for<br />
-          Improvement
+          Suggestions for Improvement
         </div>
         <div className="suggestions-box">
           <ul className="suggestions-list">
