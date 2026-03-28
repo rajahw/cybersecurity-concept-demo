@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {addMessage, getMessages, deleteMessage, formatTimestamp} from './utilities';
 import type {Message} from './utilities';
@@ -9,10 +9,6 @@ function MessagePage() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
     const username = localStorage.getItem('username') || '';
-
-    useEffect(() => {
-        loadMessages();
-    }, []);
 
     function loadMessages() {
         const allMessages = getMessages();
@@ -53,7 +49,7 @@ function MessagePage() {
         <div className="messages-title-badge">
             <h1>Messages</h1>
         </div>
-
+        
         <div className="messages-left">
             {/*Add the other divs for switching messages to encrypted/unencrypted*/}
 
