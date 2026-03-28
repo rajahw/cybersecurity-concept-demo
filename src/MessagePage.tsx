@@ -59,8 +59,14 @@ function MessagePage() {
 
             <div className="logout-button-container">
                 <button className="logout-button" onClick={userLogout}>
-                    LOGOUT
+                    LOG OUT
                 </button>
+            </div>
+
+            <div className="messages-learn-more-button-container">
+                <a className="messages-learn-more-button" href="https://pages.nist.gov/800-63-4/sp800-63b/passwords/" target="_blank" rel="noopener noreferrer">
+                    LEARN MORE
+                </a>
             </div>
         </div>
 

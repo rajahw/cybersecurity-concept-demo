@@ -338,3 +338,36 @@ body::after {
 .login-button:active {
   transform: translateY(0);
 }
+
+.login-learn-more-button-container {
+  display: flex;
+  margin-top: auto;
+  width: 100%;
+}
+
+.login-learn-more-button {
+  display: block;
+  margin: 0 auto;
+  width: 60%;
+  padding: 18px 0;
+  font-size: 1.2rem;
+  font-family: var(--tech);
+  font-weight: bold;
+  color: var(--text-dark);
+  background: var(--gold-light);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-decoration: none;
+  text-align: center;
+}
+
+.login-learn-more-button:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+
+.login-learn-more-button:active {
+  transform: translateY(0);
+}

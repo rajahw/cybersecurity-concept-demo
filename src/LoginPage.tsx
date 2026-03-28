@@ -93,7 +93,7 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
 
         <div className="login-button-container">
           <button className="login-button" onClick={userLogin}>
-            LOGIN
+            LOG IN
           </button>
         </div>
 
@@ -103,8 +103,8 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
 
         <div className="divider" />
 
-        <div className="learn-more-button-container">
-          <a className="learn-more-button" href="https://pages.nist.gov/800-63-4/sp800-63b/passwords/" target="_blank" rel="noopener noreferrer">
+        <div className="login-learn-more-button-container">
+          <a className="login-learn-more-button" href="https://pages.nist.gov/800-63-4/sp800-63b/passwords/" target="_blank" rel="noopener noreferrer">
             LEARN MORE
           </a>
         </div>
