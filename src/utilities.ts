@@ -1,3 +1,12 @@
+import zxcvbn from 'zxcvbn';
+
+export function getCrackInfo(password: string) {
+    const crackTime = zxcvbn(password).crack_times_display.offline_slow_hashing_1e4_per_second;
+    const crackScore = zxcvbn(password).score;
+
+    return {crackTime, crackScore};
+}
+
 async function createPasswordHash(password: string) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);

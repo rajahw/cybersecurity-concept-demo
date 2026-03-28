@@ -1,14 +1,15 @@
 import {useState, useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
-import {checkForBreach, analyzePasswordRequirements, getScore} from './utilities';
+import {useNavigate} from 'react-router-dom';
+import {getCrackInfo, checkForBreach, analyzePasswordRequirements, getScore} from './utilities';
 import './LoginPage.css';
 
 function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const {lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions} = analyzePasswordRequirements(password);
+  const {crackTime, crackScore} = getCrackInfo(password);
   const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
+  const {lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions} = analyzePasswordRequirements(password);
   const score = getScore(lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, breachCheck);
 
   useEffect(() => {
@@ -24,7 +25,6 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
     check();
   }, [password]);
 
-  //remove admin access if necessary
   function userLogin() {
     if (username.trim() && !/\s/.test(password) && (suggestions.length === 0 || password === 'admin')) {
       onLogin(username);
@@ -34,7 +34,7 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
       alert('Invalid username or password! Please try again.');
   }
 
-  if (breachCheck === true && (lengthCheck || lowercaseCheck || uppercaseCheck || numberCheck || specialCheck))
+  if (breachCheck === true && password.length > 0)
     suggestions.push('PASSWORD FOUND IN A DATA BREACH');
 
   return (
@@ -114,7 +114,11 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
         <div className="panel-section-title">Time to Crack</div>
 
         <div className="crack-box">
-          <span className="crack-value">XXX</span>
+          <span className={crackScore === 4 ? "crack-value-strong" :
+            crackScore === 3 ? "crack-value-good" :
+            crackScore === 2 ? "crack-value-fair" :
+            "crack-value-weak"
+          }>{password.length > 0 ? crackTime : ''}</span>
         </div>
 
         <div className="panel-section-title">Requirements</div>
