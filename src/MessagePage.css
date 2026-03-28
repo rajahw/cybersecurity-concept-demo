@@ -224,6 +224,37 @@
   cursor: not-allowed;
 }
 
+.logout-button-container {
+  display: flex;
+  margin-top: auto;
+  width: 100%;
+}
+
+.logout-button {
+  display: block;
+  margin: 0 auto;
+  width: 60%;
+  padding: 18px 0;
+  font-size: 1.2rem;
+  font-family: var(--tech);
+  font-weight: bold;
+  color: var(--text-dark);
+  background: var(--gold-light);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.logout-button:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 768px) {
   .messagePage {
     height: auto;

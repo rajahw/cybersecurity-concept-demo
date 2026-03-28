@@ -53,7 +53,17 @@ function MessagePage() {
         <div className="messages-title-badge">
             <h1>Messages</h1>
         </div>
-        <div className="messages-left"></div>
+
+        <div className="messages-left">
+            {/*Add the other divs for switching messages to encrypted/unencrypted*/}
+
+            <div className="logout-button-container">
+                <button className="logout-button" onClick={userLogout}>
+                    LOGOUT
+                </button>
+            </div>
+        </div>
+
         <div className="messages-right">
             <div className="messages-container">
                 {messages.length > 0 ? (
@@ -105,12 +115,6 @@ function MessagePage() {
                     disabled={!inputValue.trim()}
                 >
                     Send Message
-                </button>
-            </div>
-
-            <div className="logout-button-container">
-                <button className="logout-button" onClick={userLogout}>
-                    LOGOUT
                 </button>
             </div>
         </div>
