@@ -49,11 +49,12 @@ function MessagePage() {
     }
 
   return (
-    <div className="layout">
-        <div className="messages-header">
+    <div className="messages-layout">
+        <div className="messages-title-badge">
             <h1>Messages</h1>
         </div>
-        <div className="messages-left">
+        <div className="messages-left"></div>
+        <div className="messages-right">
             <div className="messages-container">
                 {messages.length > 0 ? (
                     <ul className="messages-list">

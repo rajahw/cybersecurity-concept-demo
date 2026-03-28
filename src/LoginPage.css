@@ -1,3 +1,25 @@
+@media (max-width: 680px) {
+  .login-layout {grid-template-columns: 1fr;}
+  .title-badge h1 {font-size: 2.2rem;}
+}
+
+.login-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  max-width: 900px;
+  width: 100%;
+  padding: 40px;
+}
+
+.login-title-badge h1 {
+  font-family: var(--display);
+  font-size: 3rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  line-height: 1.1;
+}
+
 .login-left {
   display: flex;
   flex-direction: column;

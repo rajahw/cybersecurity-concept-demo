@@ -26,7 +26,7 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
 
   //remove admin access if necessary
   function userLogin() {
-    if (username.trim() && (suggestions.length === 0 || password === 'admin')) {
+    if (username.trim() && !/\s/.test(password) && (suggestions.length === 0 || password === 'admin')) {
       onLogin(username);
       navigate('/messages');
     }
@@ -38,9 +38,9 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
     suggestions.push('PASSWORD FOUND IN A DATA BREACH');
 
   return (
-    <div className="layout">
+    <div className="login-layout">
       <div className="login-left">
-        <div className="title-badge">
+        <div className="login-title-badge">
           <h1>
             Password Strength<br />
             Analyzer

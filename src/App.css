@@ -42,25 +42,3 @@ body {
   align-items: center;
   min-height: 100vh;
 }
-
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  max-width: 900px;
-  width: 100%;
-  padding: 40px;
-}
-
-.title-badge h1 {
-  font-family: var(--display);
-  font-size: 3rem;
-  letter-spacing: 2px;
-  color: var(--gold);
-  line-height: 1.1;
-}
-
-@media (max-width: 680px) {
-  .layout {grid-template-columns: 1fr;}
-  .title-badge h1 {font-size: 2.2rem;}
-}

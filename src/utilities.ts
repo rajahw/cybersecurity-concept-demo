@@ -202,9 +202,11 @@ export function formatTimestamp(timestamp: number): TimeComponents {
     return {month, day, year, hours, minutes};
 }
 
+/* Searching not implemented. Remove if necessary.
 export function searchMessages(query: string): Message[] {
     const messages = getMessages();
     const lowerQuery = query.toLowerCase();
 
     return messages.filter(msg => msg.content.toLowerCase().includes(lowerQuery));
 }
+*/
