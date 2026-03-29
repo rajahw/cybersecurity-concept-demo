@@ -25,7 +25,23 @@
   line-height: 1.1;
 }
 
-.messages-left {
+.messages-left-rsa {
+  background: linear-gradient(175deg, var(--panel-bg) 0%, var(--panel-bg2) 100%);
+  border-radius: 20px;
+  border: 2.5px solid transparent;
+  background-clip: padding-box;
+  padding: 28px 22px;
+  display: grid;
+  grid-template-rows: 1fr 1fr 3fr 1fr 1fr;
+  flex-direction: column;
+  gap: 22px;
+  position: relative;
+  box-shadow:
+    0 0 0 2.5px var(--gold),
+    0 20px 60px rgba(0,0,0,0.5);
+}
+
+.messages-left-aes {
   background: linear-gradient(175deg, var(--panel-bg) 0%, var(--panel-bg2) 100%);
   border-radius: 20px;
   border: 2.5px solid transparent;
@@ -225,41 +241,13 @@
   cursor: not-allowed;
 }
 
-.logout-button-container {
-  display: flex;
-  margin-top: auto;
-  width: 100%;
-}
-
-.logout-button {
-  display: block;
-  width: 100%;
-  padding: 18px 0;
-  font-size: 1.2rem;
-  font-family: var(--tech);
-  font-weight: bold;
-  color: var(--text-dark);
-  background: var(--gold-light);
-  border: 2px solid var(--gold);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.logout-button:hover {
-  background: var(--gold);
-  transform: translateY(-2px);
-}
-
-.logout-button:active {
-  transform: translateY(0);
-}
-
+.logout-button-container,
 .messages-learn-more-button-container {
   display: flex;
   width: 100%;
 }
 
+.logout-button,
 .messages-learn-more-button {
   display: block;
   width: 100%;
@@ -273,15 +261,20 @@
   border-radius: 12px;
   cursor: pointer;
   transition: 0.2s ease;
+}
+
+.messages-learn-more-button {
   text-decoration: none;
   text-align: center;
 }
 
+.logout-button:hover,
 .messages-learn-more-button:hover {
   background: var(--gold);
   transform: translateY(-2px);
 }
 
+.logout-button:active,
 .messages-learn-more-button:active {
   transform: translateY(0);
 }
