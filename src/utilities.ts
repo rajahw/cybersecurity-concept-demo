@@ -26,37 +26,6 @@ async function createPasswordHash(password: string) {
    }
 }
 
-export async function encryptMessageAES(message: string) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(message);
-    
-    try {
-        const key = await crypto.subtle.generateKey(
-            {name: 'AES-GCM', length: 256},
-            true,
-            ['encrypt', 'decrypt']
-        );
-
-        const iv = crypto.getRandomValues(new Uint8Array(12));
-        const encrypted = await crypto.subtle.encrypt(
-            {name: 'AES-GCM', iv},
-            key,
-            data
-        );
-
-        const byteArray = Array.from(new Uint8Array(encrypted));
-        const encryptedMessage = byteArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
-        const keyArray = await crypto.subtle.exportKey('raw', key);
-        const keyText = btoa(String.fromCharCode(...new Uint8Array(keyArray)));
-        const shortKeyText = keyText.slice(0, 19) + '....';
-
-        return {message, encryptedMessage, shortKeyText};
-   } catch (error) {
-        console.error(error);
-        return undefined;
-   }
-}
-
 export async function encryptMessageRSA(message: string) {
     const encoder = new TextEncoder();
     const data = encoder.encode(message);
@@ -84,13 +53,43 @@ export async function encryptMessageRSA(message: string) {
 
         const decoder = new TextDecoder();
         const encryptedMessage = decoder.decode(encrypted);
-        const decryptedMessage = message;
         const publicKeyArray = await crypto.subtle.exportKey('spki', publicKey);
         const publicKeyText = btoa(String.fromCharCode(...new Uint8Array(publicKeyArray)));
         const privateKeyArray = await crypto.subtle.exportKey('spki', privateKey);
         const privateKeyText = btoa(String.fromCharCode(...new Uint8Array(privateKeyArray)));
 
-        return {encryptedMessage, decryptedMessage, publicKeyText, privateKeyText};
+        return {encryptedMessage, publicKeyText, privateKeyText};
+   } catch (error) {
+        console.error(error);
+        return undefined;
+   }
+}
+
+export async function encryptMessageAES(message: string) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(message);
+    
+    try {
+        const key = await crypto.subtle.generateKey(
+            {name: 'AES-GCM', length: 256},
+            true,
+            ['encrypt', 'decrypt']
+        );
+
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const encrypted = await crypto.subtle.encrypt(
+            {name: 'AES-GCM', iv},
+            key,
+            data
+        );
+
+        const byteArray = Array.from(new Uint8Array(encrypted));
+        const encryptedMessage = byteArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+        const keyArray = await crypto.subtle.exportKey('raw', key);
+        const keyText = btoa(String.fromCharCode(...new Uint8Array(keyArray)));
+        const shortKeyText = keyText.slice(0, 19) + '....';
+
+        return {encryptedMessage, shortKeyText};
    } catch (error) {
         console.error(error);
         return undefined;
@@ -197,7 +196,7 @@ export function getMessages(): Message[] {
    }
 }
 
-export function deleteMessage(id: string): void {
+export function deleteMessage(id: string) {
     const messages = getMessages();
     const filtered = messages.filter(msg => msg.id !== id);
     localStorage.setItem('messages', JSON.stringify(filtered));

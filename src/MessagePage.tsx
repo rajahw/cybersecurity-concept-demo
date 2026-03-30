@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {addMessage, getMessages, deleteMessage, formatTimestamp} from './utilities';
+import {addMessage, getMessages, deleteMessage, formatTimestamp, encryptMessageRSA, encryptMessageAES} from './utilities';
 import type {Message} from './utilities';
 import './MessagePage.css';
 
@@ -10,8 +10,11 @@ function MessagePage() {
     const [inputValue, setInputValue] = useState('');
     const [isEncrypted, setIsEncrypted] = useState(false);
     const [isRSA, setIsRSA] = useState(true);
+    const [highlightedMessage, setHighlightedMessage] = useState('');
+    const highlightedContent = messages.find(msg => msg.id === highlightedMessage)?.content || '';
     const username = localStorage.getItem('username') || '';
-
+    const {rsaEncrypted, rsaPublicKey, rsaPrivateKey} = encryptMessageRSA(highlightedContent);
+    const {aesEncrypted, aesKey} = encryptMessageAES(highlightedContent);
 
     function loadMessages() {
         const allMessages = getMessages();
@@ -29,6 +32,10 @@ function MessagePage() {
     function handleDeleteMessage(id: string) {
         deleteMessage(id);
         loadMessages();
+    }
+
+    function handleHighlightMessage(id: string) {
+        setHighlightedMessage(highlightedMessage === id ? '' : id);
     }
 
     function userLogout() {
@@ -69,11 +76,11 @@ function MessagePage() {
 
                 <div className="explanation-container">
                     <div className="explanation-label">
-                        Encrypted Message
+                        Unecrypted Message
                     </div>
 
                     <div className="explanation-item">
-                        #####
+                        {highlightedMessage !== '' ? highlightedContent : ""}
                     </div>
 
                     <div className="explanation-symbol">
@@ -85,7 +92,7 @@ function MessagePage() {
                     </div>
 
                     <div className="explanation-item">
-                        #####
+                        {highlightedMessage !== '' ? rsaPublicKey : ""}
                     </div>
 
                     <div className="explanation-symbol">
@@ -93,7 +100,7 @@ function MessagePage() {
                     </div>
 
                     <div className="explanation-item">
-                        %%%%%%
+                        {highlightedMessage !== '' ? rsaEncrypted : ""}
                     </div>
                 </div>
 
@@ -117,7 +124,11 @@ function MessagePage() {
                             {messages.map((message) => {
                                 const time = formatTimestamp(message.timestamp);
                                 return (
-                                    <li key={message.id} className="message-item">
+                                    <li
+                                        key={message.id}
+                                        className={highlightedMessage === message.id ? "message-item-highlighted" : "message-item"}
+                                        onClick={() => handleHighlightMessage(message.id)}
+                                    >
                                         <div className="message-content">
                                             <p>{message.content}</p>
                                         </div>

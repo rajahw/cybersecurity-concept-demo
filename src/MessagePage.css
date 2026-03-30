@@ -34,7 +34,6 @@
   padding: 28px 22px;
   display: grid;
   grid-template-rows: 1fr 1fr 3fr 1fr 1fr;
-  flex-direction: column;
   gap: 22px;
   position: relative;
 }
@@ -87,11 +86,11 @@
   margin: 0;
 }
 
-.message-item {
+.message-item,
+.message-item-highlighted {
   background: var(--panel-bg);
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-left: 4px solid var(--gold);
   display: flex;
   flex-direction: column;
@@ -99,6 +98,19 @@
   animation: slideIn 0.3s ease;
   max-width: 60%;
   word-wrap: break-word;
+}
+
+.message-item-highlighted {
+  outline: 2px solid white;
+}
+
+.message-item:hover {
+  outline: 2px solid var(--text-dark);
+}
+
+.message-item:active,
+.message-item-highlighted:active {
+  transform: translateY(2px);
 }
 
 @keyframes slideIn {
