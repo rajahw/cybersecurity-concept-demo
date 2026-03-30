@@ -4,16 +4,16 @@ import MessagePage from './MessagePage';
 import './App.css';
 
 function App() {
-  function saveUsername(username: string) {
-    localStorage.setItem('username', username);
-  }
+    function saveUsername(username: string) {
+        localStorage.setItem('username', username);
+    }
 
-  return (
-    <Routes>
-      <Route path='/' element={<LoginPage onLogin={saveUsername} />} />
-      <Route path='/messages' element={<MessagePage />} />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route path='/' element={<LoginPage onLogin={saveUsername} />} />
+            <Route path='/messages' element={<MessagePage />} />
+        </Routes>
+    );
 }
 
 export default App;
