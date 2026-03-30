@@ -46,8 +46,11 @@ export async function encryptMessageAES(message: string) {
 
         const byteArray = Array.from(new Uint8Array(encrypted));
         const encryptedMessage = byteArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+        const keyArray = await crypto.subtle.exportKey('raw', key);
+        const keyText = btoa(String.fromCharCode(...new Uint8Array(keyArray)));
+        const shortKeyText = keyText.slice(0, 19) + '....';
 
-        return {message, encryptedMessage};
+        return {message, encryptedMessage, shortKeyText};
    } catch (error) {
         console.error(error);
         return undefined;

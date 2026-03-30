@@ -8,8 +8,9 @@
   --panel-bg2: #1e1e30;
   --text-dark: #e0e0e0;
   --gold: #c9a84c;
-  --gold-light: rgba(201, 168, 76, 0.15);
+  --gold-light: #c9a84c40;
   --red-dark: #8b0000;
+  --red-dark-light: #8b000040;
   --border: #3a3a4e;
   --requirement-met: #00ff1e;
   --requirement-unmet: #ff4000;

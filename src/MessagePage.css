@@ -25,7 +25,8 @@
   line-height: 1.1;
 }
 
-.messages-left-rsa {
+.messages-left-rsa,
+.messages-left-aes {
   background: linear-gradient(175deg, var(--panel-bg) 0%, var(--panel-bg2) 100%);
   border-radius: 20px;
   border: 2.5px solid transparent;
@@ -36,23 +37,17 @@
   flex-direction: column;
   gap: 22px;
   position: relative;
+}
+
+.messages-left-rsa {
   box-shadow:
     0 0 0 2.5px var(--gold),
     0 20px 60px rgba(0,0,0,0.5);
 }
 
 .messages-left-aes {
-  background: linear-gradient(175deg, var(--panel-bg) 0%, var(--panel-bg2) 100%);
-  border-radius: 20px;
-  border: 2.5px solid transparent;
-  background-clip: padding-box;
-  padding: 28px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  position: relative;
   box-shadow:
-    0 0 0 2.5px var(--gold),
+    0 0 0 2.5px var(--red-dark),
     0 20px 60px rgba(0,0,0,0.5);
 }
 
@@ -241,14 +236,14 @@
   cursor: not-allowed;
 }
 
-.logout-button-container,
-.messages-learn-more-button-container {
+.rsa-button-container,
+.aes-button-container {
   display: flex;
   width: 100%;
 }
 
-.logout-button,
-.messages-learn-more-button {
+.rsa-button,
+.aes-button {
   display: block;
   width: 100%;
   padding: 18px 0;
@@ -256,27 +251,66 @@
   font-family: var(--tech);
   font-weight: bold;
   color: var(--text-dark);
-  background: var(--gold-light);
-  border: 2px solid var(--gold);
   border-radius: 12px;
   cursor: pointer;
   transition: 0.2s ease;
-}
-
-.messages-learn-more-button {
   text-decoration: none;
   text-align: center;
 }
 
-.logout-button:hover,
-.messages-learn-more-button:hover {
-  background: var(--gold);
+.rsa-button {
+  border: 2px solid var(--gold);
+  background: var(--gold-light);
+}
+
+.aes-button {
+  border: 2px solid var(--red-dark);
+  background: var(--red-dark-light);
+}
+
+.rsa-button:hover,
+.aes-button:hover {
   transform: translateY(-2px);
 }
 
-.logout-button:active,
-.messages-learn-more-button:active {
+.rsa-button:hover {
+  background: var(--gold);
+}
+
+.aes-button:hover {
+  background: var(--red-dark);
+}
+
+.rsa-button:active,
+.aes-button:active {
   transform: translateY(0);
+}
+
+.explanation-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto 1fr;
+  gap: 2px;
+}
+
+.explanation-label,
+.explanation-item,
+.explanation-symbol {
+  font-family: var(--tech);
+  font-weight: bold;
+  color: var(--text-dark);
+  text-align: center;
+}
+
+.explanation-label {
+  font-size: 0.8rem;
+}
+
+.explanation-item {
+  font-size: 1.8rem;
+}
+
+.explanation-symbol {
+  font-size: 2.0rem;
 }
 
 @media (max-width: 768px) {
