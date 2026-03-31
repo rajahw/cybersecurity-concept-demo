@@ -10,9 +10,11 @@ function MessagePage() {
     const [inputValue, setInputValue] = useState('');
     const [isEncrypted, setIsEncrypted] = useState(false);
     const [isRSA, setIsRSA] = useState(true);
+    const [encryptButtonPressed, setEncryptButtonPressed] = useState(false);
     const [highlightedMessage, setHighlightedMessage] = useState('');
     const highlightedContent = messages.find(msg => msg.id === highlightedMessage)?.content || '';
     const username = localStorage.getItem('username') || '';
+    const messagesEmpty = messages.length === 0;
     const {rsaEncrypted, rsaPublicKey, rsaPrivateKey} = encryptMessageRSA(highlightedContent);
     const {aesEncrypted, aesKey} = encryptMessageAES(highlightedContent);
 
@@ -38,11 +40,18 @@ function MessagePage() {
         setHighlightedMessage(highlightedMessage === id ? '' : id);
     }
 
+    function handleEncryptButtonPress() {
+        setIsEncrypted(!isEncrypted);
+        if (!encryptButtonPressed)
+            setEncryptButtonPressed(true);
+    }
+
     function userLogout() {
         const confirmLogout = window.confirm('Are you sure you want to log out?');
         if (confirmLogout) {
             localStorage.removeItem('username');
             localStorage.removeItem('messages');
+            setEncryptButtonPressed(false);
             navigate('/');
         }
     }
@@ -61,9 +70,8 @@ function MessagePage() {
             </div>
             
             <div className={isRSA ? "messages-left-rsa" : "messages-left-aes"}>
-                {/*Add the other divs for switching messages to encrypted/unencrypted*/}
                 <div className={isRSA ? "rsa-button-container" : "aes-button-container"}>
-                    <button className={isRSA ? "rsa-button" : "aes-button"} onClick={() => setIsEncrypted(!isEncrypted)}>
+                    <button className={isRSA ? "rsa-button" : "aes-button"} onClick={() => handleEncryptButtonPress()}>
                         {isEncrypted ? 'Decrypt' : 'Encrypt'}
                     </button>
                 </div>
@@ -76,7 +84,10 @@ function MessagePage() {
 
                 <div className="explanation-container">
                     <div className="explanation-label">
-                        Unecrypted Message
+                        {encryptButtonPressed ? !messagesEmpty
+                        ? "Unencrypted Message" :
+                        "Select a message, then press \"Encrypt\"" :
+                        "Select a message, then press \"Encrypt\""}
                     </div>
 
                     <div className="explanation-item">
@@ -84,11 +95,11 @@ function MessagePage() {
                     </div>
 
                     <div className="explanation-symbol">
-                        +
+                        {encryptButtonPressed ? "+" : ""}
                     </div>
 
                     <div className="explanation-label">
-                        Public Key
+                        {encryptButtonPressed ? "Public Key" : ""}
                     </div>
 
                     <div className="explanation-item">
@@ -96,11 +107,13 @@ function MessagePage() {
                     </div>
 
                     <div className="explanation-symbol">
-                        =
+                        {encryptButtonPressed ? "=" : ""}
                     </div>
 
                     <div className="explanation-item">
-                        {highlightedMessage !== '' ? rsaEncrypted : ""}
+                        {highlightedMessage !== '' ? 
+                        encryptButtonPressed ? rsaEncrypted : ""
+                        : ""}
                     </div>
                 </div>
 
@@ -119,7 +132,7 @@ function MessagePage() {
 
             <div className="messages-right">
                 <div className="messages-container">
-                    {messages.length > 0 ? (
+                    {!messagesEmpty ? (
                         <ul className="messages-list">
                             {messages.map((message) => {
                                 const time = formatTimestamp(message.timestamp);

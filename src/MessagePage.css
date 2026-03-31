@@ -7,7 +7,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 32px;
-    max-width: 900px;
+    max-width: 90vw;
     width: 100%;
     padding: 40px;
 }
@@ -36,6 +36,9 @@
     grid-template-rows: 1fr 1fr 3fr 1fr 1fr;
     gap: 22px;
     position: relative;
+    max-height: 80vh;
+    max-width: 100%;
+    width: 100%;
 }
 
 .messages-left-rsa {
@@ -56,11 +59,13 @@
     border: 2.5px solid transparent;
     background-clip: padding-box;
     padding: 28px 22px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 3fr 1fr;
     gap: 22px;
     position: relative;
     max-height: 80vh;
+    max-width: 100%;
+    width: 100%;
     box-shadow:
         0 0 0 2.5px var(--gold),
         inset 0 0 0 2px var(--red-dark),
@@ -69,7 +74,6 @@
 
 .messages-container {
     overflow-y: auto;
-    min-height: 0;
     background: var(--gold-light);
     border-radius: 16px;
     padding: 20px;
@@ -96,7 +100,7 @@
     flex-direction: column;
     gap: 10px;
     animation: slideIn 0.3s ease;
-    max-width: 60%;
+    max-width: 90%;
     word-wrap: break-word;
 }
 
@@ -203,9 +207,6 @@
     background: 2px solid var(--gold);
     border-radius: 10px;
     padding: 12px;
-    resize: vertical;
-    max-height: 150px;
-    min-height: 60px;
     outline: none;
     transition: 0.2s ease;
 }
@@ -302,6 +303,8 @@
     display: grid;
     grid-template-rows: auto 1fr auto auto 1fr;
     gap: 2px;
+    max-width: 100%;
+    width: 100%;
 }
 
 .explanation-label,
@@ -311,6 +314,8 @@
     font-weight: bold;
     color: var(--text-dark);
     text-align: center;
+    max-width: 100%;
+    width: 100%;
 }
 
 .explanation-label {
@@ -319,6 +324,9 @@
 
 .explanation-item {
     font-size: 1.8rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .explanation-symbol {
