@@ -1,4 +1,20 @@
-import {useState} from 'react';
+/*
+Change encrypt/decrypt button to two buttons, greying out one
+
+Update UI to show that RSA encrypts with the public key and decrypts with the private key
+    -Change UI depending on whether encrypting or decrypting
+
+Update UI to show that AES encrypts and decrypts with the same key
+    -Keep the UI the same between encrypting and decrypting
+
+Keep the encrypted/decrypted state of the message content after deselecting
+    -Store the isEncrypted state in each message object instead of using a useState
+
+Change message content font to prevent unknown characters after encryption
+    -Lucida Sans Unicode or Lucida Grande?
+*/
+
+import {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {addMessage, getMessages, deleteMessage, formatTimestamp, encryptMessageRSA, encryptMessageAES} from './utilities';
 import type {Message} from './utilities';
@@ -12,12 +28,40 @@ function MessagePage() {
     const [isRSA, setIsRSA] = useState(true);
     const [encryptButtonPressed, setEncryptButtonPressed] = useState(false);
     const [highlightedMessage, setHighlightedMessage] = useState('');
+    const [rsaEncrypted, setRsaEncrypted] = useState<string | undefined>(undefined);
+    const [rsaPublicKey, setRsaPublicKey] = useState<string | undefined>(undefined);
+    const [rsaPrivateKey, setRsaPrivateKey] = useState<string | undefined>(undefined);
+    const [aesEncrypted, setAesEncrypted] = useState<string | undefined>(undefined);
+    const [aesKey, setAesKey] = useState<string | undefined>(undefined);
     const highlightedContent = messages.find(msg => msg.id === highlightedMessage)?.content || '';
     const username = localStorage.getItem('username') || '';
     const messagesEmpty = messages.length === 0;
-    const {rsaEncrypted, rsaPublicKey, rsaPrivateKey} = encryptMessageRSA(highlightedContent);
-    const {aesEncrypted, aesKey} = encryptMessageAES(highlightedContent);
 
+    useEffect(() => {
+        async function encrypt() {
+            try {
+                const rsaResponse = await encryptMessageRSA(highlightedContent);
+                const aesResponse = await encryptMessageAES(highlightedContent);
+
+                const rsaE = rsaResponse?.encryptedMessage;
+                const rsaPub = rsaResponse?.publicKeyText;
+                const rsaPriv = rsaResponse?.privateKeyText;
+                const aesE = aesResponse?.encryptedMessage;
+                const aesK = aesResponse?.keyText;
+
+                setRsaEncrypted(rsaE);
+                setRsaPublicKey(rsaPub);
+                setRsaPrivateKey(rsaPriv);
+                setAesEncrypted(aesE);
+                setAesKey(aesK);
+            } catch (error) {
+                console.error(error);
+                return undefined;
+            }
+        }
+        encrypt();
+    }, [highlightedContent]);
+    
     function loadMessages() {
         const allMessages = getMessages();
         setMessages(allMessages);
@@ -84,8 +128,12 @@ function MessagePage() {
 
                 <div className="explanation-container">
                     <div className="explanation-label">
+                        {/*Display "Select a message, then press \"Encrypt\"" when no message is highlighted*/}
+                        {/*Change this div*/}
                         {encryptButtonPressed ? !messagesEmpty
-                        ? "Unencrypted Message" :
+                        ? isEncrypted
+                        ? "Encrypted Message" :
+                        "Unencrypted Message" :
                         "Select a message, then press \"Encrypt\"" :
                         "Select a message, then press \"Encrypt\""}
                     </div>
@@ -99,6 +147,7 @@ function MessagePage() {
                     </div>
 
                     <div className="explanation-label">
+                        {/*Change this div*/}
                         {encryptButtonPressed ? "Public Key" : ""}
                     </div>
 
@@ -111,6 +160,7 @@ function MessagePage() {
                     </div>
 
                     <div className="explanation-item">
+                        {/*Change this div*/}
                         {highlightedMessage !== '' ? 
                         encryptButtonPressed ? rsaEncrypted : ""
                         : ""}
@@ -143,7 +193,11 @@ function MessagePage() {
                                         onClick={() => handleHighlightMessage(message.id)}
                                     >
                                         <div className="message-content">
-                                            <p>{message.content}</p>
+                                            {/*Change this div*/}
+                                            <p>{isEncrypted ?
+                                            highlightedMessage === message.id ?
+                                            isRSA ? rsaEncrypted : aesEncrypted :
+                                            message.content : message.content}</p>
                                         </div>
                                         <div className="message-footer">
                                             <span className="message-info">
