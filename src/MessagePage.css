@@ -31,7 +31,7 @@
     border-radius: 20px;
     border: 2.5px solid transparent;
     background-clip: padding-box;
-    padding: 28px 22px;
+    padding: 22px;
     display: grid;
     grid-template-rows: 1fr 1fr 3fr 1fr 1fr;
     gap: 22px;
@@ -323,7 +323,7 @@
 }
 
 .explanation-item {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
