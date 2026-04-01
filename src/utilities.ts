@@ -55,7 +55,7 @@ export async function encryptMessageRSA(message: string) {
         const encryptedMessage = decoder.decode(encrypted);
         const publicKeyArray = await crypto.subtle.exportKey('spki', publicKey);
         const publicKeyText = btoa(String.fromCharCode(...new Uint8Array(publicKeyArray)));
-        const privateKeyArray = await crypto.subtle.exportKey('spki', privateKey);
+        const privateKeyArray = await crypto.subtle.exportKey('pkcs8', privateKey);
         const privateKeyText = btoa(String.fromCharCode(...new Uint8Array(privateKeyArray)));
 
         return {encryptedMessage, publicKeyText, privateKeyText};
