@@ -308,7 +308,6 @@
 .explanation-container {
     display: grid;
     grid-template-rows: auto 1fr auto auto 1fr;
-    gap: 2px;
     max-width: 100%;
     width: 100%;
 }
@@ -319,24 +318,29 @@
     font-family: var(--tech);
     font-weight: bold;
     color: var(--text-dark);
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     max-width: 100%;
     width: 100%;
 }
 
 .explanation-label {
     font-size: 0.8rem;
+    text-align: center;
 }
 
 .explanation-item {
     font-size: 1.4rem;
     overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis;
+    text-align: right;
 }
 
 .explanation-symbol {
     font-size: 2.0rem;
+    text-align: center;
 }
 
 @media (max-width: 768px) {
