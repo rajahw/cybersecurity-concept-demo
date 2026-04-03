@@ -210,7 +210,11 @@ function MessagePage() {
                 </div>
 
                 <div className="button-container">
-                    <a className={displayRSA ? "rsa-button" : "aes-button"} href="https://pages.nist.gov/800-63-4/sp800-63b/passwords/" target="_blank" rel="noopener noreferrer">
+                    <a className={displayRSA ? "rsa-button" : "aes-button"}
+                    href={displayRSA ?
+                    "https://www.geeksforgeeks.org/computer-networks/rsa-and-digital-signatures/" :
+                    "https://www.geeksforgeeks.org/computer-networks/advanced-encryption-standard-aes/"}
+                    target="_blank" rel="noopener noreferrer">
                         LEARN MORE
                     </a>
                 </div>
