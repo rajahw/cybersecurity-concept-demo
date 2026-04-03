@@ -26,7 +26,7 @@ async function createPasswordHash(password: string) {
    }
 }
 
-export async function encryptMessageRSA(message: string) {
+async function encryptMessageRSA(message: string) {
     const encoder = new TextEncoder();
     const data = encoder.encode(message);
 
@@ -65,7 +65,7 @@ export async function encryptMessageRSA(message: string) {
    }
 }
 
-export async function encryptMessageAES(message: string) {
+async function encryptMessageAES(message: string) {
     const encoder = new TextEncoder();
     const data = encoder.encode(message);
     
@@ -162,6 +162,13 @@ export interface Message {
     id: string;
     content: string;
     timestamp: number;
+    isEncrypted: boolean;
+    isRSA: boolean;
+    rsaEncrypted: string;
+    rsaPublicKey: string;
+    rsaPrivateKey: string;
+    aesEncrypted: string;
+    aesKey: string;
 }
 
 export interface TimeComponents {
@@ -177,7 +184,14 @@ export function addMessage(content: string): Message {
     const newMessage: Message = {
         id: Date.now().toString(),
         content,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        isEncrypted: false,
+        isRSA: true,
+        rsaEncrypted: '',
+        rsaPublicKey: '',
+        rsaPrivateKey: '',
+        aesEncrypted: '',
+        aesKey: ''
     };
     messages.push(newMessage);
     localStorage.setItem('messages', JSON.stringify(messages));
@@ -189,10 +203,10 @@ export function getMessages(): Message[] {
     try {
         const messages = localStorage.getItem('messages');
         return messages ? JSON.parse(messages) : [];
-   } catch (error) {
+    } catch (error) {
         console.error('Error retrieving messages:', error);
         return [];
-   }
+    }
 }
 
 export function deleteMessage(id: string) {
@@ -212,11 +226,61 @@ export function formatTimestamp(timestamp: number): TimeComponents {
     return {month, day, year, hours, minutes};
 }
 
-/* Searching not implemented. Remove if necessary.
-export function searchMessages(query: string): Message[] {
-    const messages = getMessages();
-    const lowerQuery = query.toLowerCase();
+export async function setEncryptedRSA(messageID: string) {
+    try {
+        const messages = getMessages();
+        const message = messages.find(msg => msg.id === messageID);
+        if (!message)
+            return undefined;
 
-    return messages.filter(msg => msg.content.toLowerCase().includes(lowerQuery));
+        const response = await encryptMessageRSA(message.content);
+
+        if (response) {
+            message.rsaEncrypted = response.encryptedMessage;
+            message.rsaPublicKey = response.publicKeyText;
+            message.rsaPrivateKey = response.privateKeyText;
+            message.isEncrypted = true;
+        }
+
+        message.isEncrypted = true;
+        message.isRSA = true;
+        localStorage.setItem('messages', JSON.stringify(messages));
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
 }
-*/
+
+export async function setEncryptedAES(messageID: string) {
+    try {
+        const messages = getMessages();
+        const message = messages.find(msg => msg.id === messageID);
+        if (!message)
+            return undefined;
+
+        const response = await encryptMessageAES(message.content);
+
+        if (response) {
+            message.aesEncrypted = response.encryptedMessage;
+            message.aesKey = response.keyText;
+            message.isEncrypted = true;
+        }
+
+        message.isEncrypted = true;
+        message.isRSA = false;
+        localStorage.setItem('messages', JSON.stringify(messages));
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+}
+
+export function setDecrypted(messageID: string) {
+    const messages = getMessages();
+    const message = messages.find(msg => msg.id === messageID);
+    if (!message)
+        return undefined;
+
+    message.isEncrypted = false;
+    localStorage.setItem('messages', JSON.stringify(messages));
+}

@@ -249,9 +249,15 @@
     cursor: not-allowed;
 }
 
-.rsa-button-container,
-.aes-button-container {
+.button-container {
     display: flex;
+    width: 100%;
+}
+
+.two-button-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 6px;
     width: 100%;
 }
 

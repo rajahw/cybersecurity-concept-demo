@@ -14,9 +14,9 @@ Change message content font to prevent unknown characters after encryption
     -Lucida Sans Unicode or Lucida Grande?
 */
 
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {addMessage, getMessages, deleteMessage, formatTimestamp, encryptMessageRSA, encryptMessageAES} from './utilities';
+import {addMessage, getMessages, deleteMessage, formatTimestamp, setEncryptedRSA, setEncryptedAES, setDecrypted} from './utilities';
 import type {Message} from './utilities';
 import './MessagePage.css';
 
@@ -24,47 +24,19 @@ function MessagePage() {
     const navigate = useNavigate();
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
-    const [isEncrypted, setIsEncrypted] = useState(false);
-    const [isRSA, setIsRSA] = useState(true);
-    const [encryptButtonPressed, setEncryptButtonPressed] = useState(false);
-    const [highlightedMessage, setHighlightedMessage] = useState('');
-    const [rsaEncrypted, setRsaEncrypted] = useState<string | undefined>(undefined);
-    const [rsaPublicKey, setRsaPublicKey] = useState<string | undefined>(undefined);
-    const [rsaPrivateKey, setRsaPrivateKey] = useState<string | undefined>(undefined);
-    const [aesEncrypted, setAesEncrypted] = useState<string | undefined>(undefined);
-    const [aesKey, setAesKey] = useState<string | undefined>(undefined);
-    const highlightedContent = messages.find(msg => msg.id === highlightedMessage)?.content || '';
+    const [highlightedMessageID, setHighlightedMessageID] = useState('');
+    const [highlightedMessage, setHighlightedMessage] = useState<Message>();
+    const [encryptionShouldDisplay, setEncryptionShouldDisplay] = useState(false);
+    const [displayRSA, setDisplayRSA] = useState(true);
     const username = localStorage.getItem('username') || '';
-    const messagesEmpty = messages.length === 0;
+    const messageIsSelected = highlightedMessageID !== '';
 
-    useEffect(() => {
-        async function encrypt() {
-            try {
-                const rsaResponse = await encryptMessageRSA(highlightedContent);
-                const aesResponse = await encryptMessageAES(highlightedContent);
-
-                const rsaE = rsaResponse?.encryptedMessage;
-                const rsaPub = rsaResponse?.publicKeyText;
-                const rsaPriv = rsaResponse?.privateKeyText;
-                const aesE = aesResponse?.encryptedMessage;
-                const aesK = aesResponse?.keyText;
-
-                setRsaEncrypted(rsaE);
-                setRsaPublicKey(rsaPub);
-                setRsaPrivateKey(rsaPriv);
-                setAesEncrypted(aesE);
-                setAesKey(aesK);
-            } catch (error) {
-                console.error(error);
-                return undefined;
-            }
-        }
-        encrypt();
-    }, [highlightedContent]);
+    console.log(highlightedMessage?.aesKey);
     
     function loadMessages() {
-        const allMessages = getMessages();
-        setMessages(allMessages);
+        const messages = getMessages();
+        setMessages(messages);
+        return messages;
     }
 
     function handleSendMessage() {
@@ -77,17 +49,47 @@ function MessagePage() {
 
     function handleDeleteMessage(id: string) {
         deleteMessage(id);
+        if (highlightedMessageID === id) {
+            setHighlightedMessageID('');
+            setHighlightedMessage(undefined);
+        }
         loadMessages();
     }
 
     function handleHighlightMessage(id: string) {
-        setHighlightedMessage(highlightedMessage === id ? '' : id);
+        if (highlightedMessageID === id) {
+            setHighlightedMessageID('');
+            setHighlightedMessage(undefined);
+        } else {
+            const message = messages.find(msg => msg.id === id);
+            setHighlightedMessageID(id);
+            setHighlightedMessage(message);
+            setEncryptionShouldDisplay(false);
+        }
     }
 
-    function handleEncryptButtonPress() {
-        setIsEncrypted(!isEncrypted);
-        if (!encryptButtonPressed)
-            setEncryptButtonPressed(true);
+    async function handleEncryptButtonPress() {
+        if (messageIsSelected) {
+            if (displayRSA) {
+                await setEncryptedRSA(highlightedMessageID);
+            } else {
+                await setEncryptedAES(highlightedMessageID);
+            }
+            setEncryptionShouldDisplay(true);
+            const messages = loadMessages();
+            const message = messages.find(msg => msg.id === highlightedMessageID);
+            setHighlightedMessage(message);
+        }
+    }
+
+    function handleDecryptButtonPress() {
+        if (messageIsSelected) {
+            setDecrypted(highlightedMessageID);
+            setEncryptionShouldDisplay(true);
+            const messages = loadMessages();
+            const message = messages.find(msg => msg.id === highlightedMessageID);
+            setHighlightedMessage(message);
+        }
     }
 
     function userLogout() {
@@ -95,9 +97,18 @@ function MessagePage() {
         if (confirmLogout) {
             localStorage.removeItem('username');
             localStorage.removeItem('messages');
-            setEncryptButtonPressed(false);
             navigate('/');
         }
+    }
+
+    function handleRSAPress() {
+        if (!highlightedMessage?.isEncrypted)
+            setDisplayRSA(true);
+    }
+
+    function handleAESPress() {
+        if (!highlightedMessage?.isEncrypted)
+            setDisplayRSA(false);
     }
 
     function handleKeyPress(event: React.KeyboardEvent) {
@@ -113,68 +124,93 @@ function MessagePage() {
                 <h1>Messages</h1>
             </div>
             
-            <div className={isRSA ? "messages-left-rsa" : "messages-left-aes"}>
-                <div className={isRSA ? "rsa-button-container" : "aes-button-container"}>
-                    <button className={isRSA ? "rsa-button" : "aes-button"} onClick={() => handleEncryptButtonPress()}>
-                        {isEncrypted ? 'Decrypt' : 'Encrypt'}
+            <div className={displayRSA ? "messages-left-rsa" : "messages-left-aes"}>
+                <div className="two-button-container">
+                    <button className={displayRSA ? "rsa-button" : "aes-button"} onClick={() => handleEncryptButtonPress()}>
+                        Encrypt
+                    </button>
+
+                    <button className={displayRSA ? "rsa-button" : "aes-button"} onClick={() => handleDecryptButtonPress()}>
+                        Decrypt
                     </button>
                 </div>
 
-                <div className={isRSA ? "rsa-button-container" : "aes-button-container"}>
-                    <button className={isRSA ? "rsa-button" : "aes-button"} onClick={() => setIsRSA(!isRSA)}>
-                        {isRSA ? 'RSA' : 'AES'}
+                <div className="two-button-container">
+                    <button className={displayRSA ? "rsa-button" : "aes-button"} onClick={() => handleRSAPress()}>
+                        RSA
+                    </button>
+
+                    <button className={displayRSA ? "rsa-button" : "aes-button"} onClick={() => handleAESPress()}>
+                        AES
                     </button>
                 </div>
 
                 <div className="explanation-container">
                     <div className="explanation-label">
-                        {/*Display "Select a message, then press \"Encrypt\"" when no message is highlighted*/}
-                        {/*Change this div*/}
-                        {encryptButtonPressed ? !messagesEmpty
-                        ? isEncrypted
-                        ? "Encrypted Message" :
+                        {highlightedMessage && encryptionShouldDisplay ?
+                        highlightedMessage.isEncrypted ?
                         "Unencrypted Message" :
-                        "Select a message, then press \"Encrypt\"" :
-                        "Select a message, then press \"Encrypt\""}
+                        "Encrypted Message" :
+                        "Select a message to encrypt or decrypt"}
                     </div>
 
                     <div className="explanation-item">
-                        {highlightedMessage !== '' ? highlightedContent : ""}
+                        {highlightedMessage && encryptionShouldDisplay ?
+                        highlightedMessage.isEncrypted ?
+                        highlightedMessage.content :
+                        highlightedMessage.isRSA ?
+                        highlightedMessage.rsaEncrypted :
+                        highlightedMessage.aesEncrypted :
+                        ""}
                     </div>
 
                     <div className="explanation-symbol">
-                        {encryptButtonPressed ? "+" : ""}
+                        {highlightedMessage && encryptionShouldDisplay ? "+" : ""}
                     </div>
 
                     <div className="explanation-label">
-                        {/*Change this div*/}
-                        {encryptButtonPressed ? "Public Key" : ""}
+                        {highlightedMessage && encryptionShouldDisplay ?
+                        highlightedMessage.isRSA ?
+                        highlightedMessage.isEncrypted ?
+                        "Public Key" :
+                        "Private Key" :
+                        "Key" :
+                        ""}
                     </div>
 
                     <div className="explanation-item">
-                        {highlightedMessage !== '' ? rsaPublicKey : ""}
+                        {highlightedMessage && encryptionShouldDisplay ?
+                        highlightedMessage.isRSA ?
+                        highlightedMessage.isEncrypted ?
+                        highlightedMessage.rsaPublicKey :
+                        highlightedMessage.rsaPrivateKey :
+                        highlightedMessage.aesKey :
+                        ""}
                     </div>
 
                     <div className="explanation-symbol">
-                        {encryptButtonPressed ? "=" : ""}
+                        {highlightedMessage && encryptionShouldDisplay ? "=" : ""}
                     </div>
 
                     <div className="explanation-item">
-                        {/*Change this div*/}
-                        {highlightedMessage !== '' ? 
-                        encryptButtonPressed ? rsaEncrypted : ""
-                        : ""}
+                        {highlightedMessage && encryptionShouldDisplay ?
+                        highlightedMessage.isEncrypted ?
+                        highlightedMessage.isRSA ?
+                        highlightedMessage.rsaEncrypted :
+                        highlightedMessage.aesEncrypted :
+                        highlightedMessage.content :
+                        ""}
                     </div>
                 </div>
 
-                <div className={isRSA ? "rsa-button-container" : "aes-button-container"}>
-                    <button className={isRSA ? "rsa-button" : "aes-button"} onClick={userLogout}>
+                <div className="button-container">
+                    <button className={displayRSA ? "rsa-button" : "aes-button"} onClick={userLogout}>
                         LOG OUT
                     </button>
                 </div>
 
-                <div className={isRSA ? "rsa-button-container" : "aes-button-container"}>
-                    <a className={isRSA ? "rsa-button" : "aes-button"} href="https://pages.nist.gov/800-63-4/sp800-63b/passwords/" target="_blank" rel="noopener noreferrer">
+                <div className="button-container">
+                    <a className={displayRSA ? "rsa-button" : "aes-button"} href="https://pages.nist.gov/800-63-4/sp800-63b/passwords/" target="_blank" rel="noopener noreferrer">
                         LEARN MORE
                     </a>
                 </div>
@@ -182,22 +218,20 @@ function MessagePage() {
 
             <div className="messages-right">
                 <div className="messages-container">
-                    {!messagesEmpty ? (
+                    {messages.length > 0 ? (
                         <ul className="messages-list">
                             {messages.map((message) => {
                                 const time = formatTimestamp(message.timestamp);
                                 return (
                                     <li
                                         key={message.id}
-                                        className={highlightedMessage === message.id ? "message-item-highlighted" : "message-item"}
+                                        className={highlightedMessageID === message.id ? "message-item-highlighted" : "message-item"}
                                         onClick={() => handleHighlightMessage(message.id)}
                                     >
                                         <div className="message-content">
-                                            {/*Change this div*/}
-                                            <p>{isEncrypted ?
-                                            highlightedMessage === message.id ?
-                                            isRSA ? rsaEncrypted : aesEncrypted :
-                                            message.content : message.content}</p>
+                                            <p>{message.isEncrypted ?
+                                            message.isRSA ? message.rsaEncrypted : message.aesEncrypted :
+                                            message.content}</p>
                                         </div>
                                         <div className="message-footer">
                                             <span className="message-info">
