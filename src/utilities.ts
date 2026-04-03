@@ -230,16 +230,21 @@ export async function setEncryptedRSA(messageID: string) {
     try {
         const messages = getMessages();
         const message = messages.find(msg => msg.id === messageID);
+
         if (!message)
             return undefined;
 
-        const response = await encryptMessageRSA(message.content);
+        if (message.rsaEncrypted === '' &&
+            message.rsaPublicKey === '' &&
+            message.rsaPrivateKey === ''
+        ) {
+            const response = await encryptMessageRSA(message.content);
 
-        if (response) {
-            message.rsaEncrypted = response.encryptedMessage;
-            message.rsaPublicKey = response.publicKeyText;
-            message.rsaPrivateKey = response.privateKeyText;
-            message.isEncrypted = true;
+            if (response) {
+                message.rsaEncrypted = response.encryptedMessage;
+                message.rsaPublicKey = response.publicKeyText;
+                message.rsaPrivateKey = response.privateKeyText;
+            }
         }
 
         message.isEncrypted = true;
@@ -255,15 +260,17 @@ export async function setEncryptedAES(messageID: string) {
     try {
         const messages = getMessages();
         const message = messages.find(msg => msg.id === messageID);
+
         if (!message)
             return undefined;
 
-        const response = await encryptMessageAES(message.content);
+        if (message.aesEncrypted === '' && message.aesKey === '') {
+            const response = await encryptMessageAES(message.content);
 
-        if (response) {
-            message.aesEncrypted = response.encryptedMessage;
-            message.aesKey = response.keyText;
-            message.isEncrypted = true;
+            if (response) {
+                message.aesEncrypted = response.encryptedMessage;
+                message.aesKey = response.keyText;
+            }
         }
 
         message.isEncrypted = true;
