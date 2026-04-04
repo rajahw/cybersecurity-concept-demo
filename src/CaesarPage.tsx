@@ -71,6 +71,7 @@ function CaesarPage() {
             </div>
 
             <div className="caesar-right">
+               
                 <div className="caesar-panel">
                     <div className="panel-section-title">Input</div>
                     <textarea
