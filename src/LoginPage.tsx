@@ -1,12 +1,14 @@
 import {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {getCrackInfo, checkForBreach, analyzePasswordRequirements, getScore} from './utilities';
+import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import './LoginPage.css';
 
 function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const {crackTime, crackScore} = getCrackInfo(password);
     const [breachCheck, setBreachCheck] = useState<boolean | undefined>(undefined);
     const {lengthCheck, lowercaseCheck, uppercaseCheck, numberCheck, specialCheck, suggestions} = analyzePasswordRequirements(password);
@@ -61,13 +63,23 @@ function LoginPage({onLogin}: {onLogin: (username: string) => void}) {
 
                     <div className="field-group">
                         <label>Password</label>
-                        <input
-                            type="password"
-                            placeholder=""
-                            autoComplete="off"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                        />
+                        <div className="password-input-wrapper">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder=""
+                                autoComplete="off"
+                                value={password}
+                                onChange={(event) => setPassword(event.target.value)}
+                            />
+                            <button
+                                type="button"
+                                className="show-password-button"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                tabIndex={-1}
+                            >
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="strength-section">
