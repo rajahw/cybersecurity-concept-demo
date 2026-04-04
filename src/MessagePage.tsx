@@ -1,20 +1,4 @@
-/*
-Change encrypt/decrypt button to two buttons, greying out one
-
-Update UI to show that RSA encrypts with the public key and decrypts with the private key
-    -Change UI depending on whether encrypting or decrypting
-
-Update UI to show that AES encrypts and decrypts with the same key
-    -Keep the UI the same between encrypting and decrypting
-
-Keep the encrypted/decrypted state of the message content after deselecting
-    -Store the isEncrypted state in each message object instead of using a useState
-
-Change message content font to prevent unknown characters after encryption
-    -Lucida Sans Unicode or Lucida Grande?
-*/
-
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {addMessage, getMessages, deleteMessage, formatTimestamp, setEncryptedRSA, setEncryptedAES, setDecrypted} from './utilities';
 import type {Message} from './utilities';
@@ -31,7 +15,25 @@ function MessagePage() {
     const username = localStorage.getItem('username') || '';
     const messageIsSelected = highlightedMessageID !== '';
 
-    console.log(highlightedMessage?.aesKey);
+    useEffect(() => {
+        const navEntries = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
+        if (navEntries.length > 0) {
+            const navType = navEntries[0].type;
+            if (navType === "reload") {
+                localStorage.removeItem('username');
+                localStorage.removeItem('messages');
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        const handlePopState = () => {
+            localStorage.removeItem('username');
+            localStorage.removeItem('messages');
+        };
+        window.addEventListener("popstate", handlePopState);
+        return () => window.removeEventListener("popstate", handlePopState);
+    }, []);
     
     function loadMessages() {
         const messages = getMessages();
@@ -70,11 +72,11 @@ function MessagePage() {
 
     async function handleEncryptButtonPress() {
         if (messageIsSelected) {
-            if (displayRSA) {
+            if (displayRSA)
                 await setEncryptedRSA(highlightedMessageID);
-            } else {
+            else
                 await setEncryptedAES(highlightedMessageID);
-            }
+            
             setEncryptionShouldDisplay(true);
             const messages = loadMessages();
             const message = messages.find(msg => msg.id === highlightedMessageID);
@@ -98,6 +100,14 @@ function MessagePage() {
             localStorage.removeItem('username');
             localStorage.removeItem('messages');
             navigate('/');
+        }
+    }
+
+    function handleCaesarNaviagation() {
+        const confirmNavigate = window.confirm('Are you sure you want to go to the caesar cipher page?');
+        if (confirmNavigate) {
+            localStorage.removeItem('messages');
+            navigate('/caesar');
         }
     }
 
@@ -204,7 +214,7 @@ function MessagePage() {
                 </div>
                 
                 <div className={displayRSA ? "rsa-button-container" : "aes-button-container"}>
-                    <button className={displayRSA ? "rsa-button" : "aes-button"} onClick={() => navigate('/caesar')}>
+                    <button className={displayRSA ? "rsa-button" : "aes-button"} onClick={() => handleCaesarNaviagation()}>
                         CAESAR CIPHER
                     </button>
                 </div>
