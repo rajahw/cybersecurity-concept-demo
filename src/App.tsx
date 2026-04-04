@@ -1,7 +1,7 @@
 import {Routes, Route} from 'react-router-dom';
 import LoginPage from './LoginPage';
 import MessagePage from './MessagePage';
-import CaesarPage from './CaesarPage'
+import CaesarPage from './CaesarPage';
 import './App.css';
 
 function App() {

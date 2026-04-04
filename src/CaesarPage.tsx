@@ -28,13 +28,13 @@ function CaesarPage() {
             <div className="caesar-left">
                 <div className="caesar-mode-container">
                     <button
-                        className={mode === 'encrypt' ? 'caesar-button-active' : 'caesar-button'}
+                        className="caesar-button"
                         onClick={() => setMode('encrypt')}
                     >
                         ENCRYPT
                     </button>
                     <button
-                        className={mode === 'decrypt' ? 'caesar-button-active' : 'caesar-button'}
+                        className="caesar-button"
                         onClick={() => setMode('decrypt')}
                     >
                         DECRYPT

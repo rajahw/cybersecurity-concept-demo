@@ -38,30 +38,30 @@
     width: 100%;
 }
 
-.caesar-button,
-.caesar-button-active {
-    flex: 1;
+.caesar-button {
+    display: block;
+    width: 100%;
     padding: 18px 0;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-family: var(--tech);
     font-weight: bold;
     color: var(--text-dark);
     border-radius: 12px;
     cursor: pointer;
     transition: 0.2s ease;
-    border: 2px solid var(--gold);
     text-decoration: none;
     text-align: center;
+    border: 2px solid var(--gold);
     background: var(--gold-light);
-}
-
-.caesar-button-active {
-    background: var(--gold);
 }
 
 .caesar-button:hover {
     background: var(--gold);
     transform: translateY(-2px);
+}
+
+.caesar-button:active {
+    transform: translateY(0);
 }
 
 .caesar-shift-section {
@@ -90,9 +90,10 @@
 .caesar-right {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 22px;
     background: linear-gradient(175deg, var(--panel-bg) 0%, var(--panel-bg2) 100%);
     border-radius: 20px;
+    border: 2.5px solid transparent;
     padding: 28px 22px;
     box-shadow:
         0 0 0 2.5px var(--gold),
