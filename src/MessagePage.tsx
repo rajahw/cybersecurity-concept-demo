@@ -203,8 +203,8 @@ function MessagePage() {
                     </div>
                 </div>
                 
-                <div className={isRSA ? "rsa-button-container" : "aes-button-container"}>
-                    <button className={isRSA ? "rsa-button" : "aes-button"} onClick={() => navigate('/caesar')}>
+                <div className={displayRSA ? "rsa-button-container" : "aes-button-container"}>
+                    <button className={displayRSA ? "rsa-button" : "aes-button"} onClick={() => navigate('/caesar')}>
                         CAESAR CIPHER
                     </button>
                 </div>
