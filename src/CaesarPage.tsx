@@ -64,7 +64,7 @@ function CaesarPage() {
                 </div>
 
                 <div className="caesar-nav-container">
-                    <a className="caesar-button" href="https://en.wikipedia.org/wiki/Caesar_cipher" target="_blank" rel="noopener noreferrer">
+                    <a className="caesar-button" href="https://www.geeksforgeeks.org/ethical-hacking/caesar-cipher-in-cryptography/" target="_blank" rel="noopener noreferrer">
                         LEARN MORE
                     </a>
                 </div>
