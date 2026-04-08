@@ -95,7 +95,7 @@ function MessagePage() {
     }
 
     function userLogout() {
-        const confirmLogout = window.confirm('Are you sure you want to log out?');
+        const confirmLogout = window.confirm('Are you sure you want to log out? You will lose your message history.');
         if (confirmLogout) {
             localStorage.removeItem('username');
             localStorage.removeItem('messages');
@@ -104,7 +104,7 @@ function MessagePage() {
     }
 
     function handleCaesarNaviagation() {
-        const confirmNavigate = window.confirm('Are you sure you want to go to the caesar cipher page?');
+        const confirmNavigate = window.confirm('Are you sure you want to go to the caesar cipher page? You will lose your message history.');
         if (confirmNavigate) {
             localStorage.removeItem('messages');
             navigate('/caesar');
