@@ -20,7 +20,6 @@ function MessagePage() {
         if (navEntries.length > 0) {
             const navType = navEntries[0].type;
             if (navType === "reload") {
-                localStorage.removeItem('username');
                 localStorage.removeItem('messages');
             }
         }
